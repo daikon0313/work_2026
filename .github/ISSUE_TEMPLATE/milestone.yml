@@ -1,0 +1,86 @@
+name: 🎊 Milestone Achievement
+description: Record a significant milestone or achievement
+title: "[MILESTONE] "
+labels: ["milestone", "achievement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## マイルストーン達成おめでとうございます！
+        重要な成果や節目を記録しましょう。
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: カテゴリ
+      description: このマイルストーンはどのカテゴリに属しますか？
+      options:
+        - 💼 Career (キャリア)
+        - 📚 Learning (学習)
+        - 🏃 Health (健康)
+        - 🎨 Personal (個人)
+        - 💰 Financial (財務)
+    validations:
+      required: true
+
+  - type: input
+    id: date
+    attributes:
+      label: 達成日
+      description: マイルストーンを達成した日付
+      placeholder: YYYY-MM-DD
+    validations:
+      required: true
+
+  - type: textarea
+    id: achievement
+    attributes:
+      label: 達成したこと
+      description: 何を達成しましたか？詳しく説明してください
+    validations:
+      required: true
+
+  - type: textarea
+    id: related-goals
+    attributes:
+      label: 関連する目標
+      description: このマイルストーンに関連する目標のIssue番号（例：#1, #2）
+      placeholder: "#1"
+    validations:
+      required: false
+
+  - type: textarea
+    id: journey
+    attributes:
+      label: 達成までの道のり
+      description: どのようにしてこのマイルストーンを達成しましたか？
+      placeholder: |
+        プロセス、努力したこと、学んだことなどを書きましょう。
+    validations:
+      required: false
+
+  - type: textarea
+    id: lessons-learned
+    attributes:
+      label: 学んだこと
+      description: この経験から学んだことは何ですか？
+    validations:
+      required: false
+
+  - type: textarea
+    id: next-steps
+    attributes:
+      label: 次のステップ
+      description: この達成を踏まえて、次に何をしますか？
+    validations:
+      required: false
+
+  - type: textarea
+    id: celebration
+    attributes:
+      label: お祝い方法
+      description: どのように自分を祝いますか？
+      placeholder: |
+        小さな成功も祝うことが大切です！
+    validations:
+      required: false

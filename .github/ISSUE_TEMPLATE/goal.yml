@@ -1,0 +1,138 @@
+name: 🎯 New Goal
+description: Create a new goal for 2026
+title: "[GOAL] "
+labels: ["goal"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 2026年の新しい目標を追加しましょう！
+        このテンプレートを使用して、達成したい目標を明確に定義します。
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: カテゴリ
+      description: この目標はどのカテゴリに属しますか？
+      options:
+        - 💼 Career (キャリア)
+        - 📚 Learning (学習)
+        - 🏃 Health (健康)
+        - 🎨 Personal (個人)
+        - 💰 Financial (財務)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: 優先度
+      description: この目標の優先度を選択してください
+      options:
+        - 🔴 High (高)
+        - 🟡 Medium (中)
+        - 🟢 Low (低)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: quarter
+    attributes:
+      label: 目標期限（四半期）
+      description: いつまでに達成したいですか？
+      options:
+        - Q1 (1-3月)
+        - Q2 (4-6月)
+        - Q3 (7-9月)
+        - Q4 (10-12月)
+        - 通年
+    validations:
+      required: true
+
+  - type: input
+    id: deadline
+    attributes:
+      label: 具体的な期限
+      description: 具体的な期限がある場合は入力してください（例：2026-03-31）
+      placeholder: YYYY-MM-DD
+    validations:
+      required: false
+
+  - type: textarea
+    id: description
+    attributes:
+      label: 目標の説明
+      description: この目標について詳しく説明してください
+      placeholder: |
+        何を達成したいのか、なぜこの目標が重要なのかを書きましょう。
+    validations:
+      required: true
+
+  - type: textarea
+    id: success-criteria
+    attributes:
+      label: 達成基準
+      description: どうなったら達成と言えるのか、具体的な基準を設定してください
+      placeholder: |
+        - [ ] 基準1
+        - [ ] 基準2
+        - [ ] 基準3
+    validations:
+      required: true
+
+  - type: textarea
+    id: action-plan
+    attributes:
+      label: アクションプラン
+      description: 目標を達成するための具体的なステップを書き出してください
+      placeholder: |
+        1. [ ] ステップ1
+        2. [ ] ステップ2
+        3. [ ] ステップ3
+    validations:
+      required: true
+
+  - type: textarea
+    id: resources
+    attributes:
+      label: 必要なリソース
+      description: この目標を達成するために必要なリソース（時間、お金、ツール、サポートなど）
+      placeholder: |
+        - 時間：週に5時間
+        - 予算：10,000円
+        - ツール：〇〇のサブスクリプション
+    validations:
+      required: false
+
+  - type: textarea
+    id: obstacles
+    attributes:
+      label: 予想される障害
+      description: 目標達成の妨げになりそうな障害と、その対策を考えましょう
+      placeholder: |
+        - 障害1：時間不足 → 対策：毎朝1時間確保する
+        - 障害2：モチベーション低下 → 対策：週次レビューで進捗確認
+    validations:
+      required: false
+
+  - type: textarea
+    id: motivation
+    attributes:
+      label: モチベーション
+      description: この目標を達成することで得られるものは何ですか？
+      placeholder: |
+        この目標を達成したら、どんな良いことがあるか書きましょう。
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: smart-check
+    attributes:
+      label: SMART確認
+      description: この目標はSMARTですか？
+      options:
+        - label: Specific（具体的）- 目標が明確で具体的である
+        - label: Measurable（測定可能）- 進捗と達成を測定できる
+        - label: Achievable（達成可能）- 現実的に達成可能である
+        - label: Relevant（関連性）- 自分の価値観や長期目標と一致している
+        - label: Time-bound（期限付き）- 明確な期限が設定されている
