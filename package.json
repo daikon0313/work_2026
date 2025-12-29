@@ -1,0 +1,22 @@
+{
+  "name": "2026-goals",
+  "version": "1.0.0",
+  "description": "2026年の目標管理とプレゼンテーション資料",
+  "scripts": {
+    "slides:preview": "marp -w -s slides/",
+    "slides:build": "marp slides/*.md -o dist/",
+    "slides:build:html": "marp slides/*.md --html -o dist/",
+    "slides:build:pdf": "marp slides/*.md --pdf -o dist/",
+    "slides:template": "marp slides/template.md -o dist/template.html"
+  },
+  "keywords": [
+    "goals",
+    "presentations",
+    "marp"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "@marp-team/marp-cli": "^4.0.0"
+  }
+}
