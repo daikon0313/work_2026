@@ -94,6 +94,48 @@ function getCategoryNameJa(category) {
   return categoryMap[category] || category;
 }
 
+// 年間・月間進捗を計算
+function calculateTimeProgress() {
+  const now = new Date();
+  const year = 2026;
+
+  // 現在の日付が2026年でない場合は、2026年1月1日を基準にする
+  const currentYear = now.getFullYear();
+  const isIn2026 = currentYear === year;
+
+  // 2026年の日数（うるう年ではない）
+  const daysInYear = 365;
+
+  // 年間進捗を計算
+  let dayOfYear, yearProgress;
+  if (isIn2026) {
+    const startOfYear = new Date(year, 0, 1);
+    const diffTime = now - startOfYear;
+    dayOfYear = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
+    yearProgress = Math.round((dayOfYear / daysInYear) * 100);
+  } else {
+    // 2026年以外の場合は0%とする
+    dayOfYear = 0;
+    yearProgress = 0;
+  }
+
+  // 月間進捗を計算
+  const currentMonth = isIn2026 ? now.getMonth() : 0; // 0-11
+  const currentDate = isIn2026 ? now.getDate() : 0; // 1-31
+  const daysInMonth = new Date(year, currentMonth + 1, 0).getDate();
+  const monthProgress = isIn2026 ? Math.round((currentDate / daysInMonth) * 100) : 0;
+
+  return {
+    dayOfYear,
+    daysInYear,
+    yearProgress,
+    currentDate: isIn2026 ? currentDate : 0,
+    daysInMonth,
+    monthProgress,
+    monthName: `${currentMonth + 1}月`
+  };
+}
+
 // メイン処理
 async function main() {
   console.log('Issueデータを取得中...');
@@ -128,8 +170,27 @@ async function main() {
   const completedGoals = goalIssues.filter(i => i.state === 'closed').length;
   const progressPercentage = totalGoals > 0 ? Math.round((completedGoals / totalGoals) * 100) : 0;
 
+  // 時間進捗を計算
+  const timeProgress = calculateTimeProgress();
+
   // README.mdを読み込み
   let readme = fs.readFileSync('README.md', 'utf8');
+
+  // 時間進捗セクションを更新
+  const timeProgressSection = `### 📅 2026年の進捗
+\`\`\`
+年間進捗: ${generateProgressBar(timeProgress.yearProgress)} ${timeProgress.yearProgress}% (${timeProgress.dayOfYear}/${timeProgress.daysInYear}日)
+\`\`\`
+
+### 📆 今月の進捗（${timeProgress.monthName}）
+\`\`\`
+月間進捗: ${generateProgressBar(timeProgress.monthProgress)} ${timeProgress.monthProgress}% (${timeProgress.currentDate}/${timeProgress.daysInMonth}日)
+\`\`\``;
+
+  readme = readme.replace(
+    /<!-- TIME_PROGRESS_START -->[\s\S]*?<!-- TIME_PROGRESS_END -->/,
+    `<!-- TIME_PROGRESS_START -->\n${timeProgressSection}\n<!-- TIME_PROGRESS_END -->`
+  );
 
   // 進捗セクションを更新
   const progressSection = `\`\`\`
@@ -163,7 +224,7 @@ async function main() {
       return `- [${categoryName}] **[${issue.title.replace('[GOAL] ', '')}](${issue.html_url})** - 達成日: ${closedDate}`;
     }).join('\n');
   } else {
-    completedSection = '*まだ達成した目標はありません。さあ、始めましょう！*';
+    completedSection = '*まだ達成した目標はありません*';
   }
 
   readme = readme.replace(
@@ -182,7 +243,7 @@ async function main() {
       return `- [${categoryName}] **[${issue.title.replace('[GOAL] ', '')}](${issue.html_url})**`;
     }).join('\n');
   } else {
-    currentFocusSection = '*Issuesに現在の目標を追加して始めましょう！*';
+    currentFocusSection = '*目標を[Issuesから追加](../../issues/new/choose)してください*';
   }
 
   readme = readme.replace(
