@@ -1,76 +1,79 @@
-# 🎯 2026 Goals & Achievements
+# 🎯 2026年の目標と達成記録
 
 <div align="center">
 
-![2026 Banner](https://img.shields.io/badge/Year-2026-blue?style=for-the-badge&logo=github)
-![Status](https://img.shields.io/badge/Status-In_Progress-yellow?style=for-the-badge)
+![2026 Banner](https://img.shields.io/badge/年-2026-blue?style=for-the-badge&logo=github)
+![Status](https://img.shields.io/badge/状態-進行中-yellow?style=for-the-badge)
 
 </div>
 
-## 📊 Progress Overview
+## 📊 進捗概要
 
+<!-- PROGRESS_START -->
 ```
-Overall Progress: ░░░░░░░░░░░░░░░░░░░░ 0% (0/0 goals completed)
+全体の進捗: ░░░░░░░░░░░░░░░░░░░░ 0% (0/0 目標達成)
 ```
 
-### Goals by Category
+### カテゴリー別の目標
 
-| Category | Total | Completed | In Progress | Not Started |
-|----------|-------|-----------|-------------|-------------|
-| 💼 Career | 0 | 0 | 0 | 0 |
-| 📚 Learning | 0 | 0 | 0 | 0 |
-| 🏃 Health | 0 | 0 | 0 | 0 |
-| 🎨 Personal | 0 | 0 | 0 | 0 |
-| 💰 Financial | 0 | 0 | 0 | 0 |
-
----
-
-## ✨ Completed Goals
-
-<!-- 達成した目標はここに追加されます -->
-*No goals completed yet. Let's get started!*
+| カテゴリー | 合計 | 完了 | 進行中 | 未着手 |
+|----------|------|------|--------|--------|
+| 💼 キャリア | 0 | 0 | 0 | 0 |
+| 📚 学習 | 0 | 0 | 0 | 0 |
+| 🏃 健康 | 0 | 0 | 0 | 0 |
+| 🎨 個人 | 0 | 0 | 0 | 0 |
+| 💰 財務 | 0 | 0 | 0 | 0 |
+<!-- PROGRESS_END -->
 
 ---
 
-## 🔥 Current Focus
+## ✨ 達成した目標
 
-<!-- 現在取り組んでいる目標 -->
-*Add your current goals as Issues to get started!*
-
----
-
-## 📝 All Goals
-
-<!-- ISSUEとして管理されている目標の一覧 -->
-See all goals in [Issues](../../issues)
-
-### Quick Links
-- [💼 Career Goals](../../issues?q=is%3Aissue+label%3Acareer)
-- [📚 Learning Goals](../../issues?q=is%3Aissue+label%3Alearning)
-- [🏃 Health Goals](../../issues?q=is%3Aissue+label%3Ahealth)
-- [🎨 Personal Goals](../../issues?q=is%3Aissue+label%3Apersonal)
-- [💰 Financial Goals](../../issues?q=is%3Aissue+label%3Afinancial)
+<!-- COMPLETED_GOALS_START -->
+*まだ達成した目標はありません。さあ、始めましょう！*
+<!-- COMPLETED_GOALS_END -->
 
 ---
 
-## 📈 Statistics
+## 🔥 現在の焦点
+
+<!-- CURRENT_FOCUS_START -->
+*Issuesに現在の目標を追加して始めましょう！*
+<!-- CURRENT_FOCUS_END -->
+
+---
+
+## 📝 すべての目標
+
+Issuesで管理されている目標の一覧は [Issues](../../issues) をご覧ください
+
+### クイックリンク
+- [💼 キャリアの目標](../../issues?q=is%3Aissue+label%3Acareer)
+- [📚 学習の目標](../../issues?q=is%3Aissue+label%3Alearning)
+- [🏃 健康の目標](../../issues?q=is%3Aissue+label%3Ahealth)
+- [🎨 個人の目標](../../issues?q=is%3Aissue+label%3Apersonal)
+- [💰 財務の目標](../../issues?q=is%3Aissue+label%3Afinancial)
+
+---
+
+## 📈 統計情報
 
 <div align="center">
 
-### GitHub Stats
+### GitHub統計
 ![GitHub Stats](https://github-readme-stats.vercel.app/api?username=daikon0313&show_icons=true&theme=tokyonight&hide_border=true&count_private=true)
 
-### Most Used Languages
+### 最も使用している言語
 ![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=daikon0313&layout=compact&theme=tokyonight&hide_border=true)
 
-### GitHub Trophies
+### GitHubトロフィー
 ![trophy](https://github-profile-trophy.vercel.app/?username=daikon0313&theme=tokyonight&no-frame=true&no-bg=true&margin-w=4&column=7)
 
 </div>
 
 ---
 
-## 🛠️ Tech Stack & Skills
+## 🛠️ 技術スタック・スキル
 
 <div align="center">
 
@@ -80,46 +83,54 @@ See all goals in [Issues](../../issues)
 
 ---
 
-## 📅 Timeline
+## 📅 タイムライン
 
-### Q1 (January - March)
-- [ ] Goals to be added
+### Q1（1月〜3月）
+<!-- Q1_GOALS_START -->
+- [ ] 目標を追加してください
+<!-- Q1_GOALS_END -->
 
-### Q2 (April - June)
-- [ ] Goals to be added
+### Q2（4月〜6月）
+<!-- Q2_GOALS_START -->
+- [ ] 目標を追加してください
+<!-- Q2_GOALS_END -->
 
-### Q3 (July - September)
-- [ ] Goals to be added
+### Q3（7月〜9月）
+<!-- Q3_GOALS_START -->
+- [ ] 目標を追加してください
+<!-- Q3_GOALS_END -->
 
-### Q4 (October - December)
-- [ ] Goals to be added
-
----
-
-## 🎯 Goal Setting Philosophy
-
-> "A goal without a plan is just a wish." - Antoine de Saint-Exupéry
-
-### My Approach
-1. **SMART Goals** - Specific, Measurable, Achievable, Relevant, Time-bound
-2. **Regular Review** - Weekly progress checks
-3. **Celebrate Wins** - Acknowledge every achievement
-4. **Learn from Failures** - Adjust and improve
+### Q4（10月〜12月）
+<!-- Q4_GOALS_START -->
+- [ ] 目標を追加してください
+<!-- Q4_GOALS_END -->
 
 ---
 
-## 📌 How to Use This Repository
+## 🎯 目標設定の哲学
 
-1. **Create a Goal**: Use the [Goal Template](../../issues/new?template=goal.md) to create a new goal
-2. **Track Progress**: Update the issue with your progress
-3. **Complete**: Close the issue when the goal is achieved
-4. **Reflect**: Add your learnings to this README
+> "計画のない目標は、ただの願い事である" - アントワーヌ・ド・サン＝テグジュペリ
+
+### 私のアプローチ
+1. **SMART目標** - 具体的、測定可能、達成可能、関連性がある、期限付き
+2. **定期的なレビュー** - 週次での進捗確認
+3. **成功を祝う** - すべての達成を認める
+4. **失敗から学ぶ** - 調整して改善する
+
+---
+
+## 📌 このリポジトリの使い方
+
+1. **目標を作成**: [目標テンプレート](../../issues/new?choose)を使って新しい目標を作成
+2. **進捗を追跡**: Issueに進捗を更新
+3. **完了**: 目標を達成したらIssueをクローズ
+4. **振り返り**: 学びをこのREADMEに追加（自動更新されます）
 
 ---
 
 <div align="center">
 
-### 💪 Let's make 2026 amazing!
+### 💪 2026年を素晴らしい年にしよう！
 
 ![Visitor Count](https://visitor-badge.laobi.icu/badge?page_id=daikon0313.2026)
 
@@ -127,4 +138,4 @@ See all goals in [Issues](../../issues)
 
 ---
 
-*Last updated: 2025-12-29*
+*最終更新: 自動更新*
