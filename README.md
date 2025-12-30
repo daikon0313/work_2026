@@ -32,12 +32,6 @@
 | 💰 財務 | 5 | 0 | 1 | 4 |
 <!-- PROGRESS_END -->
 
-## ✨ 達成した目標
-
-<!-- COMPLETED_GOALS_START -->
-*まだ達成した目標はありません*
-<!-- COMPLETED_GOALS_END -->
-
 ## 🔥 進行中の目標
 
 <!-- CURRENT_FOCUS_START -->
