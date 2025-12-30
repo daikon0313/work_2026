@@ -1,12 +1,24 @@
 import { useState } from 'react'
 import { quizData } from '../data/quizData'
 
-function Quiz(): JSX.Element {
+// 型定義
+type AnswerHistory = {
+  question_id: number
+  question_text: string
+  selected_answer: number
+  correct_answer: number
+  is_correct: boolean
+}
+
+function Quiz() {
   // State の定義
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
   const [score, setScore] = useState(0)
   const [showScore, setShowScore] = useState(false)
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null)
+  const [answerHistory, setAnswerHistory] = useState<AnswerHistory[]>([])
+  const [isSaving, setIsSaving] = useState(false)
+  const [saveMessage, setSaveMessage] = useState<string>('')
 
   // 現在の質問を取得
   const currentQuestion = quizData[currentQuestionIndex]
@@ -15,9 +27,53 @@ function Quiz(): JSX.Element {
   const handleAnswerClick = (answerIndex: number) => {
     setSelectedAnswer(answerIndex)
 
+    const isCorrect = answerIndex === currentQuestion.correctAnswer
+
     // 正解かチェック
-    if (answerIndex === currentQuestion.correctAnswer) {
+    if (isCorrect) {
       setScore(score + 1)
+    }
+
+    // 回答履歴に追加
+    const newAnswer: AnswerHistory = {
+      question_id: currentQuestion.id,
+      question_text: currentQuestion.question,
+      selected_answer: answerIndex,
+      correct_answer: currentQuestion.correctAnswer,
+      is_correct: isCorrect
+    }
+    setAnswerHistory([...answerHistory, newAnswer])
+  }
+
+  // クイズ結果をバックエンドに保存
+  const saveQuizResults = async (finalScore: number, finalAnswers: AnswerHistory[]) => {
+    setIsSaving(true)
+    setSaveMessage('')
+
+    try {
+      const response = await fetch('http://localhost:8000/api/quiz/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          score: finalScore,
+          total_questions: quizData.length,
+          answers: finalAnswers
+        })
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to save quiz results')
+      }
+
+      const data = await response.json()
+      setSaveMessage(`✅ ${data.message}`)
+    } catch (error) {
+      console.error('Error saving quiz results:', error)
+      setSaveMessage('❌ 結果の保存に失敗しました')
+    } finally {
+      setIsSaving(false)
     }
   }
 
@@ -28,6 +84,9 @@ function Quiz(): JSX.Element {
       setCurrentQuestionIndex(nextQuestion)
       setSelectedAnswer(null)
     } else {
+      // クイズ終了時に結果を保存
+      const finalScore = score + (selectedAnswer === currentQuestion.correctAnswer ? 1 : 0)
+      saveQuizResults(finalScore, answerHistory)
       setShowScore(true)
     }
   }
@@ -37,6 +96,8 @@ function Quiz(): JSX.Element {
     setScore(0)
     setShowScore(false)
     setSelectedAnswer(null)
+    setAnswerHistory([])
+    setSaveMessage('')
   }
 
   // スコア画面
@@ -48,6 +109,23 @@ function Quiz(): JSX.Element {
           スコア: {score} / {quizData.length}
         </p>
         <p>正解率: {Math.round((score / quizData.length) * 100)}%</p>
+
+        {/* 保存状態の表示 */}
+        {isSaving && (
+          <p style={{ color: '#2196F3', marginTop: '20px' }}>
+            💾 結果を保存中...
+          </p>
+        )}
+        {saveMessage && (
+          <p style={{
+            marginTop: '20px',
+            fontSize: '16px',
+            color: saveMessage.includes('✅') ? '#4CAF50' : '#f44336'
+          }}>
+            {saveMessage}
+          </p>
+        )}
+
         <button
           onClick={handleRestart}
           style={{
