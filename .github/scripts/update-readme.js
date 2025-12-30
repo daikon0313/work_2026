@@ -113,6 +113,24 @@ function getCategoryNameJa(category) {
   return categoryMap[category] || category;
 }
 
+// 現在の四半期を取得
+function getCurrentQuarter() {
+  const now = new Date();
+  const year = 2026;
+  const currentYear = now.getFullYear();
+
+  // 2026年でない場合はQ1を返す
+  if (currentYear !== year) {
+    return 'Q1';
+  }
+
+  const month = now.getMonth() + 1; // 1-12
+  if (month >= 1 && month <= 3) return 'Q1';
+  if (month >= 4 && month <= 6) return 'Q2';
+  if (month >= 7 && month <= 9) return 'Q3';
+  return 'Q4';
+}
+
 // 年間・月間進捗を計算
 function calculateTimeProgress() {
   const now = new Date();
@@ -179,17 +197,27 @@ async function main() {
   // カテゴリー別に集計
   const categories = ['career', 'learning', 'health', 'personal', 'financial'];
   const stats = {};
+  const currentQuarter = getCurrentQuarter();
 
   categories.forEach(cat => {
     const categoryIssues = goalIssues.filter(issue => getCategoryLabel(issue) === cat);
     const completed = categoryIssues.filter(i => i.state === 'closed').length;
-    const open = categoryIssues.filter(i => i.state === 'open').length;
+    const openIssues = categoryIssues.filter(i => i.state === 'open');
+
+    // 進行中: 現在の四半期のopenなIssue
+    const inProgress = openIssues.filter(i => getQuarter(i) === currentQuarter).length;
+
+    // 未着手: 将来の四半期または四半期未指定のopenなIssue
+    const notStarted = openIssues.filter(i => {
+      const quarter = getQuarter(i);
+      return quarter !== currentQuarter;
+    }).length;
 
     stats[cat] = {
       total: categoryIssues.length,
       completed: completed,
-      inProgress: open,
-      notStarted: 0 // 現在のIssueシステムでは区別できないため0
+      inProgress: inProgress,
+      notStarted: notStarted
     };
   });
 
