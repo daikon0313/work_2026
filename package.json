@@ -2,12 +2,19 @@
   "name": "2026-goals",
   "version": "1.0.0",
   "description": "2026年の目標管理とプレゼンテーション資料",
+  "private": true,
+  "workspaces": [
+    "11_quiz_app"
+  ],
   "scripts": {
     "slides:preview": "marp -w -s slides/",
     "slides:build": "marp slides/*.md -o dist/",
     "slides:build:html": "marp slides/*.md --html -o dist/",
     "slides:build:pdf": "marp slides/*.md --pdf -o dist/",
-    "slides:template": "marp slides/template.md -o dist/template.html"
+    "slides:template": "marp slides/template.md -o dist/template.html",
+    "quiz:dev": "npm run dev --workspace=11_quiz_app",
+    "quiz:build": "npm run build --workspace=11_quiz_app",
+    "quiz:preview": "npm run preview --workspace=11_quiz_app"
   },
   "keywords": [
     "goals",
