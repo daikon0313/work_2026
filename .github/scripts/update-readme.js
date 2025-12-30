@@ -50,11 +50,30 @@ async function getAllIssues() {
   return allIssues.filter(issue => !issue.pull_request);
 }
 
-// カテゴリーラベルを取得
+// カテゴリーラベルを取得（ラベルまたは本文から）
 function getCategoryLabel(issue) {
+  // まずラベルをチェック（後方互換性のため）
   const categoryLabels = ['career', 'learning', 'health', 'personal', 'financial'];
   const label = issue.labels.find(l => categoryLabels.includes(l.name));
-  return label ? label.name : null;
+  if (label) return label.name;
+
+  // ラベルがない場合、issue本文からカテゴリを抽出
+  if (issue.body) {
+    // "### カテゴリ" セクションからカテゴリを読み取る
+    const categoryMatch = issue.body.match(/###\s*カテゴリ[^\n]*\n\s*(.+)/);
+    if (categoryMatch) {
+      const categoryText = categoryMatch[1].trim();
+
+      // カテゴリテキストからマッピング
+      if (categoryText.includes('Career') || categoryText.includes('キャリア')) return 'career';
+      if (categoryText.includes('Learning') || categoryText.includes('学習')) return 'learning';
+      if (categoryText.includes('Health') || categoryText.includes('健康')) return 'health';
+      if (categoryText.includes('Personal') || categoryText.includes('個人')) return 'personal';
+      if (categoryText.includes('Financial') || categoryText.includes('財務')) return 'financial';
+    }
+  }
+
+  return null;
 }
 
 // 四半期を取得
@@ -141,10 +160,19 @@ async function main() {
   console.log('Issueデータを取得中...');
   const allIssues = await getAllIssues();
 
-  // goalラベルを持つIssueのみ
-  const goalIssues = allIssues.filter(issue =>
-    issue.labels.some(l => l.name === 'goal')
-  );
+  // goalラベルを持つIssue、またはタイトルが[GOAL]で始まるIssue、またはカテゴリが判定できるIssue
+  const goalIssues = allIssues.filter(issue => {
+    // goalラベルがある
+    if (issue.labels.some(l => l.name === 'goal')) return true;
+
+    // タイトルが[GOAL]で始まる（Issue Formsで作成された可能性が高い）
+    if (issue.title.startsWith('[GOAL]')) return true;
+
+    // カテゴリが判定できる（本文にカテゴリ情報がある）
+    if (getCategoryLabel(issue)) return true;
+
+    return false;
+  });
 
   console.log(`${goalIssues.length}件の目標を見つけました`);
 
