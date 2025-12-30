@@ -307,28 +307,6 @@ async function main() {
     `<!-- CURRENT_FOCUS_START -->\n${currentFocusSection}\n<!-- CURRENT_FOCUS_END -->`
   );
 
-  // 四半期ごとの目標を更新
-  for (let q = 1; q <= 4; q++) {
-    const quarterIssues = goalIssues.filter(issue => getQuarter(issue) === `Q${q}`);
-    let quarterSection = '';
-
-    if (quarterIssues.length > 0) {
-      quarterSection = quarterIssues.map(issue => {
-        const category = getCategoryLabel(issue);
-        const categoryName = category ? getCategoryNameJa(category) : '';
-        const status = issue.state === 'closed' ? 'x' : ' ';
-        return `- [${status}] [${categoryName}] [${issue.title.replace('[GOAL] ', '')}](${issue.html_url})`;
-      }).join('\n');
-    } else {
-      quarterSection = '- [ ] 目標を追加してください';
-    }
-
-    readme = readme.replace(
-      new RegExp(`<!-- Q${q}_GOALS_START -->[\s\S]*?<!-- Q${q}_GOALS_END -->`, 'g'),
-      `<!-- Q${q}_GOALS_START -->\n${quarterSection}\n<!-- Q${q}_GOALS_END -->`
-    );
-  }
-
   // README.mdを保存
   fs.writeFileSync('README.md', readme);
   console.log('README.mdを更新しました！');
