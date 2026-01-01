@@ -39,6 +39,18 @@ terraform/**/.terraform.lock.hcl
 # 生成されたファイル
 terraform/modules/spcs/specs/service.yaml
 
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# 機密情報
+*.pem
+*.key
+*.p8
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
