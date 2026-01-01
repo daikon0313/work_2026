@@ -1,0 +1,30 @@
+spec:
+  containers:
+  - name: quiz-app
+    image: /__DATABASE_LOWER__/quiz_spcs/quiz_app_repo/quiz-app:__IMAGE_TAG__
+    env:
+      SNOWFLAKE_ACCOUNT: __SNOWFLAKE_ACCOUNT__
+      SNOWFLAKE_WAREHOUSE: __SNOWFLAKE_WAREHOUSE__
+      SNOWFLAKE_DATABASE: __SNOWFLAKE_DATABASE__
+      SNOWFLAKE_SCHEMA: QUIZ
+    resources:
+      requests:
+        cpu: 0.5
+        memory: 512Mi
+      limits:
+        cpu: 1
+        memory: 1Gi
+    volumeMounts:
+    - name: app-data
+      mountPath: /app/data
+  endpoints:
+  - name: web
+    port: 8080
+    protocol: HTTP
+    public: true
+  volumes:
+  - name: app-data
+    source: local
+    uid: 1000
+    gid: 1000
+

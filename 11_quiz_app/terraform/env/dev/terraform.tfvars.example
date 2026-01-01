@@ -1,0 +1,39 @@
+# このファイルは自動生成されます
+# scripts/generate_tfvars.py が connection.toml から terraform.tfvars を生成します
+#
+# 手動で編集する必要はありません。代わりに connection.toml を編集してください。
+# connection.toml.example をコピーして connection.toml を作成し、以下の項目を設定してください：
+#
+# [snowflake]
+# account = "YOUR_ACCOUNT_LOCATOR"              # 例: "ON44798-DS_NEW_YEAR_PARTY"
+# user = "YOUR_USERNAME"                         # 例: "harato"
+# private_key_path = "/path/to/private_key.pem"  # 例: "/Users/username/.ssh/snowflake_key.pem"
+# warehouse = "YOUR_WAREHOUSE"                   # 例: "STREAMLIT_WH"
+# database = "YOUR_DATABASE"                     # 例: "HARATO_TEST_DB"
+# schema = "QUIZ"                                # スキーマ名
+# role = "SYSADMIN"                              # ロール名
+#
+# 自動生成される terraform.tfvars の例:
+#
+# # Snowflake認証情報
+# snowflake_account          = "ON44798-DS_NEW_YEAR_PARTY"
+# snowflake_user             = "harato"
+# snowflake_role             = "SYSADMIN"
+# snowflake_private_key_path = "/Users/harato/.ssh/snowflake_key.pem"
+#
+# # Database設定
+# database_name   = "HARATO_TEST_DB"
+# schema_name     = "QUIZ_SPCS"
+# create_database = false
+#
+# # Compute Pool設定
+# compute_pool_name = "quiz_app_pool_dev"
+# instance_family   = "CPU_X64_XS"
+# min_nodes         = 1
+# max_nodes         = 1
+#
+# # Service設定
+# service_name  = "quiz_app_service_dev"
+# min_instances = 1
+# max_instances = 1
+# image_tag     = "dev"

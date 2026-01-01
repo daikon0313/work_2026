@@ -12,6 +12,32 @@ dist
 dist-ssr
 *.local
 connection.toml
+connection.docker.toml
+snowflake_key.pem
+
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# 機密情報
+*.pem
+*.key
+*.p8
+
+# Terraform
+terraform/.terraform/
+terraform/**/.terraform/
+terraform/**/*.tfstate
+terraform/**/*.tfstate.*
+terraform/**/*.tfvars
+!terraform/**/*.tfvars.example
+terraform/**/.terraform.lock.hcl
+
+# 生成されたファイル
+terraform/modules/spcs/specs/service.yaml
 
 # Editor directories and files
 .vscode/*
