@@ -48,8 +48,8 @@ WEEK_OF_MONTH=$(( ($DAYS_SINCE_FIRST / 7) + 1 ))
 # 週番号を2桁にフォーマット
 WEEK_NUM=$(printf "%02d" $WEEK_OF_MONTH)
 
-# ファイル名を生成 (YYYYMMWW.md)
-WEEKLY_FILE="${SCRIPT_DIR}/${CURRENT_YEAR}${CURRENT_MONTH}${WEEK_NUM}.md"
+# ファイル名を生成 (notes/YYYYMMWW.md)
+WEEKLY_FILE="${SCRIPT_DIR}/notes/${CURRENT_YEAR}${CURRENT_MONTH}${WEEK_NUM}.md"
 
 echo -e "\n${GREEN}生成する週報ファイル: ${WEEKLY_FILE}${NC}"
 
@@ -148,8 +148,8 @@ fi
 echo -e "${GREEN}GitHub Issueを取得中...${NC}"
 
 if command -v gh &> /dev/null; then
-    # 全てのgoalラベルのIssueを取得（bodyも含む）
-    ALL_ISSUES=$(gh issue list --state open --label "goal" --json number,title,body,labels --limit 100 2>/dev/null || echo "[]")
+    # 全てのIssueを取得（bodyも含む）
+    ALL_ISSUES=$(gh issue list --state open --json number,title,body,labels --limit 100 2>/dev/null || echo "[]")
 
     # 今週期限のIssueを抽出（「具体的な期限」フィールドが今週中のもの）
     THIS_WEEK_DUE=$(echo "$ALL_ISSUES" | jq -r --arg start "$START_DATE" --arg end "$END_DATE" '.[] |
@@ -165,7 +165,7 @@ if command -v gh &> /dev/null; then
     fi
 
     # クローズしたIssue（今週クローズされたもの）
-    CLOSED_ISSUES=$(gh issue list --state closed --search "closed:${START_DATE}..${END_DATE}" --json number,title,closedAt,labels --jq '.[] | select(.labels[].name == "goal") | "- #\(.number): \(.title) (クローズ日: \(.closedAt[:10]))"' 2>/dev/null || echo "")
+    CLOSED_ISSUES=$(gh issue list --state closed --search "closed:${START_DATE}..${END_DATE}" --json number,title,closedAt,labels --jq '.[] | "- #\(.number): \(.title) (クローズ日: \(.closedAt[:10]))"' 2>/dev/null || echo "")
 
     if [ -z "$CLOSED_ISSUES" ]; then
         CLOSED_ISSUES="今週クローズしたIssueはありません。"
