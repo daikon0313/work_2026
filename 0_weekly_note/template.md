@@ -18,6 +18,10 @@ COMMIT_DETAILS
 
 ## 🎯 GitHub Issue
 
+### 今週期限のIssue
+
+THIS_WEEK_DUE_ISSUES
+
 ### クローズしたIssue
 
 CLOSED_ISSUES
@@ -30,25 +34,23 @@ OPEN_ISSUES
 
 ## 💬 Claude Code でのやり取り
 
-<!-- ここに今週のClaude Codeでの主要な会話トピックを手動で記入してください -->
+<!-- 今週の主要な開発トピックをコミットメッセージから抽出 -->
 
 ### 主なトピック
 
--
+CLAUDE_TOPICS
 
 ### 学んだこと・気づき
 
--
+LEARNINGS
 
 ---
 
 ## ✅ 次週のTODO
 
-<!-- 次週に取り組むタスクをリストアップしてください -->
+<!-- 次週期限のIssueから自動生成 -->
 
-- [ ]
-- [ ]
-- [ ]
+NEXT_WEEK_TODOS
 
 ---
 
