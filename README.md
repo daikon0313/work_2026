@@ -18,14 +18,14 @@
 
 <!-- PROGRESS_START -->
 ```
-全体の進捗: ██░░░░░░░░░░░░░░░░░░ 9% (1/11 目標達成)
+全体の進捗: ██░░░░░░░░░░░░░░░░░░ 8% (1/12 目標達成)
 ```
 
 ### カテゴリー別の目標
 
 | カテゴリー | 合計 | 完了 | 進行中 | 未着手 |
 |----------|------|------|--------|--------|
-| 💼 キャリア | 3 | 0 | 3 | 0 |
+| 💼 キャリア | 4 | 0 | 4 | 0 |
 | 📚 学習 | 3 | 1 | 1 | 1 |
 | 🏃 健康 | 0 | 0 | 0 | 0 |
 | 🎨 個人 | 0 | 0 | 0 | 0 |
@@ -35,11 +35,11 @@
 ## 🔥 進行中の目標
 
 <!-- CURRENT_FOCUS_START -->
+- [💼 キャリア] **[Practice Tests with Detailed Explanations for Databricks Certified Data Engineer Professional exam 2](https://github.com/daikon0313/work_2026/issues/12)**
 - [💼 キャリア] **[Practice Tests with Detailed Explanations for Databricks Certified Data Engineer Professional exam 1](https://github.com/daikon0313/work_2026/issues/11)**
 - [💼 キャリア] **[実践的なトレーニングによるDatabricks Data Engineer Professional認定試験対策 1回目](https://github.com/daikon0313/work_2026/issues/10)**
 - [💼 キャリア] **[Databricks 認定データ エンジニア プロフェッショナル 受かる](https://github.com/daikon0313/work_2026/issues/9)**
 - [📚 学習] **[本を年間50冊読む](https://github.com/daikon0313/work_2026/issues/8)**
-- [📚 学習] **[ホームページ作成](https://github.com/daikon0313/work_2026/issues/7)**
 <!-- CURRENT_FOCUS_END -->
 
 ---
