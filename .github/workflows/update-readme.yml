@@ -4,8 +4,8 @@ on:
   issues:
     types: [opened, edited, closed, reopened, labeled, unlabeled]
   schedule:
-    # 毎日午前9時（JST）に実行
-    - cron: '0 0 * * *'
+    # 毎日午前6時（JST）に実行 (UTC 21時 = JST 6時)
+    - cron: '0 21 * * *'
   workflow_dispatch:
 
 permissions:
