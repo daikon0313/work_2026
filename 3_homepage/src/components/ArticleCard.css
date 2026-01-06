@@ -1,0 +1,58 @@
+.article-card {
+  background-color: var(--background);
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.article-card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+  border-color: var(--primary-color);
+}
+
+.article-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.article-title {
+  font-size: 1.25rem;
+  color: var(--text-color);
+  margin: 0;
+  flex: 1;
+}
+
+.article-date {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  white-space: nowrap;
+}
+
+.article-labels {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.75rem;
+}
+
+.article-label {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background-color: var(--background-alt);
+  color: var(--primary-color);
+  border-radius: 1rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.article-excerpt {
+  color: var(--text-light);
+  line-height: 1.6;
+  margin: 0;
+}

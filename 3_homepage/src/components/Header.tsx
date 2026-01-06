@@ -4,13 +4,7 @@ function Header() {
   return (
     <header className="header">
       <div className="header-container">
-        <h1 className="logo">Portfolio</h1>
-        <nav className="nav">
-          <a href="#hero">Home</a>
-          <a href="#about">About</a>
-          <a href="#skills">Skills</a>
-          <a href="#contact">Contact</a>
-        </nav>
+        <h1 className="logo">Tech Blog</h1>
       </div>
     </header>
   )

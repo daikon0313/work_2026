@@ -2,20 +2,23 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background-color: var(--background-alt);
 }
 
-main {
+.main-content {
   flex: 1;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2rem;
 }
 
-section {
-  padding: 4rem 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
+.search-section {
+  margin-bottom: 2rem;
 }
 
 @media (max-width: 768px) {
-  section {
-    padding: 3rem 1.5rem;
+  .main-content {
+    padding: 1.5rem;
   }
 }

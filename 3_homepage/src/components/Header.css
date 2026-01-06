@@ -10,28 +10,12 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 1rem 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  text-align: center;
 }
 
 .logo {
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   font-weight: 700;
-  color: var(--primary-color);
-}
-
-.nav {
-  display: flex;
-  gap: 2rem;
-}
-
-.nav a {
-  font-weight: 500;
-  transition: color 0.3s ease;
-}
-
-.nav a:hover {
   color: var(--primary-color);
 }
 
@@ -40,11 +24,7 @@
     padding: 1rem 1.5rem;
   }
 
-  .nav {
-    gap: 1rem;
-  }
-
-  .nav a {
-    font-size: 0.9rem;
+  .logo {
+    font-size: 1.5rem;
   }
 }

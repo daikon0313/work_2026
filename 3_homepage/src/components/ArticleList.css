@@ -1,0 +1,23 @@
+.article-list {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr;
+}
+
+.no-articles {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--text-light);
+}
+
+@media (min-width: 768px) {
+  .article-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .article-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
