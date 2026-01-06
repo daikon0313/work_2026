@@ -17,9 +17,6 @@ function ReadingListPage() {
     <div className="reading-list-page">
       <div className="reading-list-container">
         <h1 className="page-title">読書リスト</h1>
-        <p className="page-description">
-          後で読みたい記事やブログを保存して、読んだら感想を記録しましょう
-        </p>
 
         <AddReadingForm onAdd={addItem} />
 
