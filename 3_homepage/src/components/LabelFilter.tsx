@@ -1,12 +1,11 @@
 import type { ArticleLabel } from '../types/article'
+import { ARTICLE_LABELS } from '../types/article'
 import './LabelFilter.css'
 
 interface LabelFilterProps {
   selectedLabel: ArticleLabel | null
   onSelectLabel: (label: ArticleLabel | null) => void
 }
-
-const labels: ArticleLabel[] = ['Snowflake', 'Databricks', 'モデリング', 'dbt', 'Terraform', '日記', 'その他']
 
 function LabelFilter({ selectedLabel, onSelectLabel }: LabelFilterProps) {
   return (
@@ -17,7 +16,7 @@ function LabelFilter({ selectedLabel, onSelectLabel }: LabelFilterProps) {
       >
         すべて
       </button>
-      {labels.map((label) => (
+      {ARTICLE_LABELS.map((label) => (
         <button
           key={label}
           className={`label-btn ${selectedLabel === label ? 'active' : ''}`}
