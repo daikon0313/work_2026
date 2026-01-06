@@ -44,45 +44,6 @@
 
 ---
 
-## 📁 プロジェクト
-
-### 3_homepage - Tech Blog
-
-Reactベースの個人技術ブログサイト。Markdownで記事を記述し、検索とラベルフィルタリング機能を備えています。
-
-**技術スタック**: React 19, TypeScript, Vite, react-markdown
-
-**主な機能**:
-- 📝 Markdownベースの記事管理
-- 🔍 全文検索機能
-- 🏷️ ラベルフィルタリング（Snowflake, dbt, Terraform等）
-- 📱 レスポンシブデザイン
-- 🚀 GitHub Pages自動デプロイ
-
-**コマンド**:
-```bash
-npm run homepage:dev    # 開発サーバー起動
-npm run homepage:build  # ビルド
-npm run homepage:preview # プレビュー
-```
-
-詳細: [3_homepage/README.md](3_homepage/README.md) | [記事追加ガイド](3_homepage/CONTRIBUTING.md)
-
----
-
-### 11_quiz_app - Quiz Application
-
-Reactベースのクイズアプリケーション。
-
-**コマンド**:
-```bash
-npm run quiz:dev     # 開発サーバー起動
-npm run quiz:build   # ビルド
-npm run quiz:preview # プレビュー
-```
-
----
-
 <div align="center">
 
 [すべての目標を見る](../../issues) | [新しい目標を追加](../../issues/new/choose)
