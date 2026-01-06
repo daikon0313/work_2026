@@ -31,10 +31,15 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci
+        run: |
+          npm ci
+          npm ci --workspace=3_homepage
 
       - name: Build homepage
         run: npm run homepage:build
+
+      - name: Add .nojekyll file
+        run: touch 3_homepage/dist/.nojekyll
 
       - name: Setup Pages
         uses: actions/configure-pages@v4

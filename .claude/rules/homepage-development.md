@@ -65,8 +65,57 @@ export default Component
 
 ### ブランチ戦略
 
-- mainブランチ: 本番環境
-- 開発ブランチ: `claude/*` または `feature/*`
+- **mainブランチ**: 本番環境（常にデプロイ可能な状態を保つ）
+- **開発ブランチ**: `claude/*` または `feature/*`
+
+#### ブランチ管理のルール
+
+1. **新機能追加時は必ず新しいブランチを作成**
+   ```bash
+   # mainから最新の状態を取得
+   git fetch origin main
+
+   # 新しいブランチを作成
+   git checkout -b claude/feature-name-sessionid origin/main
+   ```
+
+2. **ブランチ命名規則**
+   - `claude/[機能名]-[セッションID]`
+   - 例: `claude/add-search-feature-pt1sl`
+
+3. **マージ後は必ずブランチを削除**
+   ```bash
+   # リモートブランチを削除
+   git push origin --delete ブランチ名
+
+   # ローカルブランチを削除
+   git branch -d ブランチ名
+   ```
+
+4. **PR作成前のチェックリスト**
+   - [ ] ビルドが成功すること
+   - [ ] 型エラーがないこと
+   - [ ] コミットメッセージが適切か
+   - [ ] 不要なファイルが含まれていないか
+
+5. **マージ後の手順**
+   - PRをマージ
+   - ブランチを削除
+   - ローカルのmainブランチを更新: `git pull origin main`
+
+6. **PR作成ワークフロー**
+   - **準備段階**（Claudeが実施）:
+     - [ ] すべての変更をコミット
+     - [ ] ビルドテストを実行し成功を確認
+     - [ ] 型エラーがないことを確認
+     - [ ] ブランチをリモートにプッシュ
+     - [ ] PR作成前のチェックリストを完了
+
+   - **PR作成**（ユーザーが実施）:
+     - Claude は PR作成前で作業を停止する
+     - ユーザーがGitHub UIまたはURLから手動でPRを作成
+     - PR URL形式: `https://github.com/[username]/work_2026/compare/main...[branch-name]`
+     - 例: `https://github.com/daikon0313/work_2026/compare/main...claude/add-search-feature-pt1sl`
 
 ### コミットメッセージ
 
