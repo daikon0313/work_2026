@@ -6,7 +6,7 @@ interface LabelFilterProps {
   onSelectLabel: (label: ArticleLabel | null) => void
 }
 
-const labels: ArticleLabel[] = ['Snowflake', 'モデリング', 'dbt', 'Terraform', '日記', 'その他']
+const labels: ArticleLabel[] = ['Snowflake', 'Databricks', 'モデリング', 'dbt', 'Terraform', '日記', 'その他']
 
 function LabelFilter({ selectedLabel, onSelectLabel }: LabelFilterProps) {
   return (
