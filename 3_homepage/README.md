@@ -75,3 +75,16 @@ Markdown形式で記事を書きます。
 
 このサイトはGitHub Pagesで公開されます：
 https://[ユーザー名].github.io/work_2026/
+
+### GitHub Secretsの設定
+
+GitHub Pagesにデプロイする際、読書リストのパスワードをGitHub Secretsで管理します。
+
+1. GitHubリポジトリの **Settings** → **Secrets and variables** → **Actions** に移動
+2. **New repository secret** をクリック
+3. 以下の設定を追加：
+   - Name: `ADMIN_PASSWORD`
+   - Secret: `0313`（またはお好みのパスワード）
+4. **Add secret** をクリック
+
+これにより、GitHub Actionsのビルド時に自動的にパスワードが設定されます。

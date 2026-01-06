@@ -35,6 +35,10 @@ jobs:
           npm ci
           npm ci --workspace=3_homepage
 
+      - name: Setup auth config
+        run: |
+          echo "export const ADMIN_PASSWORD = '${{ secrets.ADMIN_PASSWORD }}'" > 3_homepage/src/config/auth.ts
+
       - name: Build homepage
         run: npm run homepage:build
 
