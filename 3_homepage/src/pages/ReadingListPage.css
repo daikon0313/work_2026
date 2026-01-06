@@ -1,0 +1,71 @@
+.reading-list-page {
+  min-height: calc(100vh - 80px);
+  background: #f5f7fa;
+  padding: 2rem 0;
+}
+
+.reading-list-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #333;
+  margin: 0 0 0.5rem 0;
+}
+
+.page-description {
+  font-size: 1rem;
+  color: #666;
+  margin: 0 0 2rem 0;
+}
+
+.reading-section {
+  margin-bottom: 3rem;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 1.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.count {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #888;
+}
+
+.reading-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+}
+
+.empty-message {
+  color: #999;
+  text-align: center;
+  padding: 3rem 0;
+  font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+  .reading-list-page {
+    padding: 1rem 0;
+  }
+
+  .page-title {
+    font-size: 1.5rem;
+  }
+
+  .reading-grid {
+    grid-template-columns: 1fr;
+  }
+}
