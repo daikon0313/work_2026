@@ -65,8 +65,43 @@ export default Component
 
 ### ブランチ戦略
 
-- mainブランチ: 本番環境
-- 開発ブランチ: `claude/*` または `feature/*`
+- **mainブランチ**: 本番環境（常にデプロイ可能な状態を保つ）
+- **開発ブランチ**: `claude/*` または `feature/*`
+
+#### ブランチ管理のルール
+
+1. **新機能追加時は必ず新しいブランチを作成**
+   ```bash
+   # mainから最新の状態を取得
+   git fetch origin main
+
+   # 新しいブランチを作成
+   git checkout -b claude/feature-name-sessionid origin/main
+   ```
+
+2. **ブランチ命名規則**
+   - `claude/[機能名]-[セッションID]`
+   - 例: `claude/add-search-feature-pt1sl`
+
+3. **マージ後は必ずブランチを削除**
+   ```bash
+   # リモートブランチを削除
+   git push origin --delete ブランチ名
+
+   # ローカルブランチを削除
+   git branch -d ブランチ名
+   ```
+
+4. **PR作成前のチェックリスト**
+   - [ ] ビルドが成功すること
+   - [ ] 型エラーがないこと
+   - [ ] コミットメッセージが適切か
+   - [ ] 不要なファイルが含まれていないか
+
+5. **マージ後の手順**
+   - PRをマージ
+   - ブランチを削除
+   - ローカルのmainブランチを更新: `git pull origin main`
 
 ### コミットメッセージ
 
