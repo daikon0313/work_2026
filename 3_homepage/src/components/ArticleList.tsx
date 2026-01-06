@@ -4,10 +4,9 @@ import './ArticleList.css'
 
 interface ArticleListProps {
   articles: Article[]
-  onArticleClick: (article: Article) => void
 }
 
-function ArticleList({ articles, onArticleClick }: ArticleListProps) {
+function ArticleList({ articles }: ArticleListProps) {
   if (articles.length === 0) {
     return (
       <div className="no-articles">
@@ -22,7 +21,6 @@ function ArticleList({ articles, onArticleClick }: ArticleListProps) {
         <ArticleCard
           key={article.id}
           article={article}
-          onClick={() => onArticleClick(article)}
         />
       ))}
     </div>
