@@ -4,6 +4,7 @@
   "description": "2026年の目標管理とプレゼンテーション資料",
   "private": true,
   "workspaces": [
+    "3_homepage",
     "11_quiz_app"
   ],
   "scripts": {
@@ -12,6 +13,9 @@
     "slides:build:html": "marp slides/*.md --html -o dist/",
     "slides:build:pdf": "marp slides/*.md --pdf -o dist/",
     "slides:template": "marp slides/template.md -o dist/template.html",
+    "homepage:dev": "npm run dev --workspace=3_homepage",
+    "homepage:build": "npm run build --workspace=3_homepage",
+    "homepage:preview": "npm run preview --workspace=3_homepage",
     "quiz:dev": "npm run dev --workspace=11_quiz_app",
     "quiz:build": "npm run build --workspace=11_quiz_app",
     "quiz:preview": "npm run preview --workspace=11_quiz_app"
