@@ -35,6 +35,9 @@ jobs:
           npm ci
           npm ci --workspace=3_homepage
 
+      - name: Setup auth config
+        run: cp 3_homepage/src/config/auth.example.ts 3_homepage/src/config/auth.ts
+
       - name: Build homepage
         run: npm run homepage:build
 
