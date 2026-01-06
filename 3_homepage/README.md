@@ -2,6 +2,25 @@
 
 Reactベースのシンプルな技術ブログサイトです。Markdownで記事を記述し、検索とラベルフィルタリング機能を備えています。
 
+## 初回セットアップ
+
+### 1. 認証設定
+
+読書リスト機能の追加フォームにはパスワード保護がかかっています。
+
+```bash
+# auth.example.tsをauth.tsにコピー
+cp src/config/auth.example.ts src/config/auth.ts
+```
+
+`src/config/auth.ts`を開いて、自分のパスワードに変更してください：
+
+```typescript
+export const ADMIN_PASSWORD = 'your-password-here'
+```
+
+⚠️ **重要**: `auth.ts`は`.gitignore`に含まれており、Gitで追跡されません。
+
 ## クイックスタート
 
 ```bash
@@ -41,6 +60,7 @@ Markdown形式で記事を書きます。
 ## サポートラベル
 
 - Snowflake
+- Databricks
 - モデリング
 - dbt
 - Terraform

@@ -1,6 +1,9 @@
+import { useState } from 'react'
 import { useReadingList } from '../hooks/useReadingList'
+import { useAuth } from '../hooks/useAuth'
 import AddReadingForm from '../components/AddReadingForm'
 import ReadingCard from '../components/ReadingCard'
+import PasswordPrompt from '../components/PasswordPrompt'
 import './ReadingListPage.css'
 
 function ReadingListPage() {
@@ -13,12 +16,39 @@ function ReadingListPage() {
     deleteItem,
   } = useReadingList()
 
+  const { isAuthenticated, authenticate } = useAuth()
+  const [showPasswordPrompt, setShowPasswordPrompt] = useState(false)
+
+  const handleAuthSuccess = (password: string): boolean => {
+    const success = authenticate(password)
+    if (success) {
+      setShowPasswordPrompt(false)
+    }
+    return success
+  }
+
   return (
     <div className="reading-list-page">
       <div className="reading-list-container">
         <h1 className="page-title">読書リスト</h1>
 
-        <AddReadingForm onAdd={addItem} />
+        {isAuthenticated ? (
+          <AddReadingForm onAdd={addItem} />
+        ) : (
+          <button
+            className="add-reading-btn"
+            onClick={() => setShowPasswordPrompt(true)}
+          >
+            + 新しい記事を追加
+          </button>
+        )}
+
+        {showPasswordPrompt && (
+          <PasswordPrompt
+            onSubmit={handleAuthSuccess}
+            onCancel={() => setShowPasswordPrompt(false)}
+          />
+        )}
 
         <section className="reading-section">
           <h2 className="section-title">
