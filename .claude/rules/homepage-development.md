@@ -103,6 +103,20 @@ export default Component
    - ブランチを削除
    - ローカルのmainブランチを更新: `git pull origin main`
 
+6. **PR作成ワークフロー**
+   - **準備段階**（Claudeが実施）:
+     - [ ] すべての変更をコミット
+     - [ ] ビルドテストを実行し成功を確認
+     - [ ] 型エラーがないことを確認
+     - [ ] ブランチをリモートにプッシュ
+     - [ ] PR作成前のチェックリストを完了
+
+   - **PR作成**（ユーザーが実施）:
+     - Claude は PR作成前で作業を停止する
+     - ユーザーがGitHub UIまたはURLから手動でPRを作成
+     - PR URL形式: `https://github.com/[username]/work_2026/compare/main...[branch-name]`
+     - 例: `https://github.com/daikon0313/work_2026/compare/main...claude/add-search-feature-pt1sl`
+
 ### コミットメッセージ
 
 - 日本語で簡潔に記述
