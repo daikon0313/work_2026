@@ -3,10 +3,10 @@ import './AddReadingForm.css'
 
 interface AddReadingFormProps {
   onAdd: (title: string, reason: string) => void
+  onCancel?: () => void
 }
 
-function AddReadingForm({ onAdd }: AddReadingFormProps) {
-  const [isOpen, setIsOpen] = useState(false)
+function AddReadingForm({ onAdd, onCancel }: AddReadingFormProps) {
   const [title, setTitle] = useState('')
   const [reason, setReason] = useState('')
 
@@ -16,22 +16,13 @@ function AddReadingForm({ onAdd }: AddReadingFormProps) {
       onAdd(title, reason)
       setTitle('')
       setReason('')
-      setIsOpen(false)
     }
   }
 
   const handleCancel = () => {
     setTitle('')
     setReason('')
-    setIsOpen(false)
-  }
-
-  if (!isOpen) {
-    return (
-      <button className="add-reading-btn" onClick={() => setIsOpen(true)}>
-        + 新しい記事を追加
-      </button>
-    )
+    onCancel?.()
   }
 
   return (

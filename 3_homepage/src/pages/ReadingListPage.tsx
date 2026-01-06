@@ -16,15 +16,23 @@ function ReadingListPage() {
     deleteItem,
   } = useReadingList()
 
-  const { isAuthenticated, authenticate } = useAuth()
+  const { authenticate } = useAuth()
   const [showPasswordPrompt, setShowPasswordPrompt] = useState(false)
+  const [showAddForm, setShowAddForm] = useState(false)
 
   const handleAuthSuccess = (password: string): boolean => {
     const success = authenticate(password)
     if (success) {
       setShowPasswordPrompt(false)
+      setShowAddForm(true)
     }
     return success
+  }
+
+  const handleAddItem = (title: string, reason: string) => {
+    addItem(title, reason)
+    // 追加後はフォームを閉じる（再度パスワードが必要になる）
+    setShowAddForm(false)
   }
 
   return (
@@ -32,8 +40,11 @@ function ReadingListPage() {
       <div className="reading-list-container">
         <h1 className="page-title">読書リスト</h1>
 
-        {isAuthenticated ? (
-          <AddReadingForm onAdd={addItem} />
+        {showAddForm ? (
+          <AddReadingForm
+            onAdd={handleAddItem}
+            onCancel={() => setShowAddForm(false)}
+          />
         ) : (
           <button
             className="add-reading-btn"
