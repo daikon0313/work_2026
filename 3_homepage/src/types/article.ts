@@ -1,4 +1,4 @@
-export type ArticleLabel = 'Snowflake' | 'モデリング' | 'dbt' | 'Terraform' | '日記' | 'その他'
+export type ArticleLabel = 'Snowflake' | 'Databricks' | 'モデリング' | 'dbt' | 'Terraform' | '日記' | 'その他'
 
 export interface Article {
   id: string

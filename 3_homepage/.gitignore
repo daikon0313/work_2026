@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Auth config (contains password)
+src/config/auth.ts
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

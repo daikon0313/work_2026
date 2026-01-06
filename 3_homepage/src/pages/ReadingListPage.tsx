@@ -1,6 +1,9 @@
+import { useState } from 'react'
 import { useReadingList } from '../hooks/useReadingList'
+import { useAuth } from '../hooks/useAuth'
 import AddReadingForm from '../components/AddReadingForm'
 import ReadingCard from '../components/ReadingCard'
+import PasswordPrompt from '../components/PasswordPrompt'
 import './ReadingListPage.css'
 
 function ReadingListPage() {
@@ -13,15 +16,50 @@ function ReadingListPage() {
     deleteItem,
   } = useReadingList()
 
+  const { authenticate } = useAuth()
+  const [showPasswordPrompt, setShowPasswordPrompt] = useState(false)
+  const [showAddForm, setShowAddForm] = useState(false)
+
+  const handleAuthSuccess = (password: string): boolean => {
+    const success = authenticate(password)
+    if (success) {
+      setShowPasswordPrompt(false)
+      setShowAddForm(true)
+    }
+    return success
+  }
+
+  const handleAddItem = (title: string, reason: string) => {
+    addItem(title, reason)
+    // 追加後はフォームを閉じる（再度パスワードが必要になる）
+    setShowAddForm(false)
+  }
+
   return (
     <div className="reading-list-page">
       <div className="reading-list-container">
         <h1 className="page-title">読書リスト</h1>
-        <p className="page-description">
-          後で読みたい記事やブログを保存して、読んだら感想を記録しましょう
-        </p>
 
-        <AddReadingForm onAdd={addItem} />
+        {showAddForm ? (
+          <AddReadingForm
+            onAdd={handleAddItem}
+            onCancel={() => setShowAddForm(false)}
+          />
+        ) : (
+          <button
+            className="add-reading-btn"
+            onClick={() => setShowPasswordPrompt(true)}
+          >
+            + 新しい記事を追加
+          </button>
+        )}
+
+        {showPasswordPrompt && (
+          <PasswordPrompt
+            onSubmit={handleAuthSuccess}
+            onCancel={() => setShowPasswordPrompt(false)}
+          />
+        )}
 
         <section className="reading-section">
           <h2 className="section-title">
