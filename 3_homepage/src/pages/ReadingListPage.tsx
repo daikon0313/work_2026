@@ -4,6 +4,8 @@ import { useAuth } from '../hooks/useAuth'
 import AddReadingForm from '../components/AddReadingForm'
 import ReadingCard from '../components/ReadingCard'
 import PasswordPrompt from '../components/PasswordPrompt'
+import ReadingDetailModal from '../components/ReadingDetailModal'
+import type { ReadingItem } from '../types/reading'
 import './ReadingListPage.css'
 
 function ReadingListPage() {
@@ -19,6 +21,7 @@ function ReadingListPage() {
   const { authenticate } = useAuth()
   const [showPasswordPrompt, setShowPasswordPrompt] = useState(false)
   const [showAddForm, setShowAddForm] = useState(false)
+  const [selectedItem, setSelectedItem] = useState<ReadingItem | null>(null)
 
   const handleAuthSuccess = (password: string): boolean => {
     const success = authenticate(password)
@@ -29,8 +32,8 @@ function ReadingListPage() {
     return success
   }
 
-  const handleAddItem = (title: string, reason: string) => {
-    addItem(title, reason)
+  const handleAddItem = (title: string, url: string, reason: string) => {
+    addItem(title, url, reason)
     // 追加後はフォームを閉じる（再度パスワードが必要になる）
     setShowAddForm(false)
   }
@@ -74,7 +77,6 @@ function ReadingListPage() {
                   key={item.id}
                   item={item}
                   onMarkAsRead={markAsRead}
-                  onMarkAsUnread={markAsUnread}
                   onDelete={deleteItem}
                 />
               ))}
@@ -95,13 +97,22 @@ function ReadingListPage() {
                   key={item.id}
                   item={item}
                   onMarkAsRead={markAsRead}
-                  onMarkAsUnread={markAsUnread}
                   onDelete={deleteItem}
+                  onClick={() => setSelectedItem(item)}
                 />
               ))}
             </div>
           )}
         </section>
+
+        {selectedItem && (
+          <ReadingDetailModal
+            item={selectedItem}
+            onClose={() => setSelectedItem(null)}
+            onMarkAsUnread={markAsUnread}
+            onDelete={deleteItem}
+          />
+        )}
       </div>
     </div>
   )

@@ -21,6 +21,19 @@
   background: #f9fdf9;
 }
 
+.reading-card.compact {
+  cursor: pointer;
+  padding: 1rem 1.5rem;
+}
+
+.reading-card.compact .reading-card-title {
+  font-size: 1.125rem;
+}
+
+.reading-card.compact:hover {
+  background: #e8f5e9;
+}
+
 .reading-card-header {
   display: flex;
   justify-content: space-between;
@@ -62,6 +75,7 @@
   margin-bottom: 1rem;
 }
 
+.reading-url,
 .reading-reason,
 .reading-impression {
   color: #555;
@@ -69,11 +83,24 @@
   margin: 0 0 0.5rem 0;
 }
 
+.reading-url strong,
 .reading-reason strong,
 .reading-impression strong {
   color: #333;
   display: block;
   margin-bottom: 0.25rem;
+}
+
+.url-link {
+  color: #2196f3;
+  text-decoration: none;
+  word-break: break-all;
+  transition: color 0.2s;
+}
+
+.url-link:hover {
+  color: #1976d2;
+  text-decoration: underline;
 }
 
 .read-date {

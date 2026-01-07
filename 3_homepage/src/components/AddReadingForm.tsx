@@ -2,25 +2,28 @@ import { useState } from 'react'
 import './AddReadingForm.css'
 
 interface AddReadingFormProps {
-  onAdd: (title: string, reason: string) => void
+  onAdd: (title: string, url: string, reason: string) => void
   onCancel?: () => void
 }
 
 function AddReadingForm({ onAdd, onCancel }: AddReadingFormProps) {
   const [title, setTitle] = useState('')
+  const [url, setUrl] = useState('')
   const [reason, setReason] = useState('')
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    if (title.trim() && reason.trim()) {
-      onAdd(title, reason)
+    if (title.trim() && url.trim() && reason.trim()) {
+      onAdd(title, url, reason)
       setTitle('')
+      setUrl('')
       setReason('')
     }
   }
 
   const handleCancel = () => {
     setTitle('')
+    setUrl('')
     setReason('')
     onCancel?.()
   }
@@ -36,6 +39,17 @@ function AddReadingForm({ onAdd, onCancel }: AddReadingFormProps) {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="記事やブログのタイトル"
+          required
+        />
+      </div>
+      <div className="form-field">
+        <label htmlFor="url">URL</label>
+        <input
+          id="url"
+          type="url"
+          value={url}
+          onChange={(e) => setUrl(e.target.value)}
+          placeholder="https://example.com/article"
           required
         />
       </div>
