@@ -1,23 +1,40 @@
 import { useState } from 'react'
+import type { CreateReadingIssueInput } from '../types/reading'
 import './AddReadingForm.css'
 
 interface AddReadingFormProps {
-  onAdd: (title: string, url: string, reason: string) => void
-  onCancel?: () => void
+  onAdd: (input: CreateReadingIssueInput) => Promise<void>
 }
 
-function AddReadingForm({ onAdd, onCancel }: AddReadingFormProps) {
+function AddReadingForm({ onAdd }: AddReadingFormProps) {
+  const [isOpen, setIsOpen] = useState(false)
   const [title, setTitle] = useState('')
   const [url, setUrl] = useState('')
   const [reason, setReason] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (title.trim() && url.trim() && reason.trim()) {
-      onAdd(title, url, reason)
+    setError(null)
+
+    if (!title.trim() || !url.trim() || !reason.trim()) {
+      setError('すべてのフィールドを入力してください')
+      return
+    }
+
+    setIsSubmitting(true)
+    try {
+      await onAdd({ title, url, reason })
+      // リセット
       setTitle('')
       setUrl('')
       setReason('')
+      setIsOpen(false)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : '追加に失敗しました')
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -25,54 +42,85 @@ function AddReadingForm({ onAdd, onCancel }: AddReadingFormProps) {
     setTitle('')
     setUrl('')
     setReason('')
-    onCancel?.()
+    setError(null)
+    setIsOpen(false)
+  }
+
+  if (!isOpen) {
+    return (
+      <div className="add-reading-form-toggle">
+        <button onClick={() => setIsOpen(true)}>
+          📚 新しい記事を追加
+        </button>
+      </div>
+    )
   }
 
   return (
-    <form className="add-reading-form" onSubmit={handleSubmit}>
-      <h3 className="form-title">後で読む記事を追加</h3>
-      <div className="form-field">
-        <label htmlFor="title">タイトル</label>
-        <input
-          id="title"
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="記事やブログのタイトル"
-          required
-        />
-      </div>
-      <div className="form-field">
-        <label htmlFor="url">URL</label>
-        <input
-          id="url"
-          type="url"
-          value={url}
-          onChange={(e) => setUrl(e.target.value)}
-          placeholder="https://example.com/article"
-          required
-        />
-      </div>
-      <div className="form-field">
-        <label htmlFor="reason">読みたい理由</label>
-        <textarea
-          id="reason"
-          value={reason}
-          onChange={(e) => setReason(e.target.value)}
-          placeholder="なぜこれを読みたいのか..."
-          rows={3}
-          required
-        />
-      </div>
-      <div className="form-actions">
-        <button type="submit" className="submit-btn">
-          追加
-        </button>
-        <button type="button" className="cancel-btn" onClick={handleCancel}>
-          キャンセル
-        </button>
-      </div>
-    </form>
+    <div className="add-reading-form">
+      <h3>📚 新しい記事を追加</h3>
+
+      {error && (
+        <div className="add-reading-form-error">
+          {error}
+        </div>
+      )}
+
+      <form onSubmit={handleSubmit}>
+        <div className="add-reading-form-group">
+          <label htmlFor="title">記事タイトル</label>
+          <input
+            type="text"
+            id="title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="記事のタイトルを入力"
+            disabled={isSubmitting}
+          />
+        </div>
+
+        <div className="add-reading-form-group">
+          <label htmlFor="url">記事URL</label>
+          <input
+            type="url"
+            id="url"
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+            placeholder="https://example.com/article"
+            disabled={isSubmitting}
+          />
+        </div>
+
+        <div className="add-reading-form-group">
+          <label htmlFor="reason">読みたい理由</label>
+          <textarea
+            id="reason"
+            value={reason}
+            onChange={(e) => setReason(e.target.value)}
+            placeholder="なぜこの記事を読みたいのか..."
+            disabled={isSubmitting}
+          />
+        </div>
+
+        <div className="add-reading-form-actions">
+          <button
+            type="button"
+            className="add-reading-form-btn secondary"
+            onClick={handleCancel}
+            disabled={isSubmitting}
+          >
+            キャンセル
+          </button>
+          <button
+            type="submit"
+            className="add-reading-form-btn primary"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? '追加中...' : '追加する'}
+          </button>
+        </div>
+      </form>
+    </div>
   )
 }
 
