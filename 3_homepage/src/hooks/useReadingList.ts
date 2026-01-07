@@ -24,10 +24,11 @@ export function useReadingList() {
   }, [items])
 
   // 新しい読書アイテムを追加
-  const addItem = (title: string, reason: string) => {
+  const addItem = (title: string, url: string, reason: string) => {
     const newItem: ReadingItem = {
       id: Date.now().toString(),
       title,
+      url,
       status: 'to-read',
       reason,
       createdAt: new Date().toISOString(),
