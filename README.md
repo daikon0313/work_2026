@@ -1,5 +1,7 @@
 # 🎯 2026年の目標
 
+🌐 **ホームページ**: [https://daikon0313.github.io/work_2026/](https://daikon0313.github.io/work_2026/)
+
 <!-- TIME_PROGRESS_START -->
 ### 📅 2026年の進捗
 ```
