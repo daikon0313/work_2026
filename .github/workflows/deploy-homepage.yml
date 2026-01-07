@@ -40,6 +40,8 @@ jobs:
           echo "export const ADMIN_PASSWORD = '${{ secrets.ADMIN_PASSWORD }}'" > 3_homepage/src/config/auth.ts
 
       - name: Build homepage
+        env:
+          VITE_GITHUB_TOKEN: ${{ secrets.VITE_GITHUB_TOKEN }}
         run: npm run homepage:build
 
       - name: Add .nojekyll file

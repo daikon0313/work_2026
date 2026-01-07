@@ -4,22 +4,38 @@ Reactベースのシンプルな技術ブログサイトです。Markdownで記�
 
 ## 初回セットアップ
 
-### 1. 認証設定
+### 1. GitHub Personal Access Token の設定
 
-読書リスト機能の追加フォームにはパスワード保護がかかっています。
+読書リスト機能はGitHub Issues APIを使用するため、Personal Access Tokenが必要です。
+
+#### ステップ1: GitHub トークンの作成
+
+1. GitHubにログイン → 右上のプロフィールアイコン → **Settings**
+2. 左サイドバー下部 → **Developer settings**
+3. **Personal access tokens** → **Tokens (classic)** → **Generate new token (classic)**
+4. トークンの設定：
+   - **Note**: `work_2026 読書リスト用` など、わかりやすい名前
+   - **Expiration**: 有効期限を選択（推奨: 90 days）
+   - **Select scopes**: ✅ **repo** にチェック（Issues の作成・更新に必要）
+5. **Generate token** をクリック
+6. ⚠️ **重要**: 表示されたトークンをコピー（一度しか表示されません）
+   - 形式: `ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`
+
+#### ステップ2: ローカル環境にトークンを設定
 
 ```bash
-# auth.example.tsをauth.tsにコピー
-cp src/config/auth.example.ts src/config/auth.ts
+# .env.local ファイルを作成
+cd 3_homepage
+cp .env.local.example .env.local
 ```
 
-`src/config/auth.ts`を開いて、自分のパスワードに変更してください：
+`.env.local` を開いて、トークンを設定：
 
-```typescript
-export const ADMIN_PASSWORD = 'your-password-here'
+```bash
+VITE_GITHUB_TOKEN=ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
 
-⚠️ **重要**: `auth.ts`は`.gitignore`に含まれており、Gitで追跡されません。
+⚠️ **重要**: `.env.local`は`.gitignore`に含まれており、Gitで追跡されません。
 
 ## クイックスタート
 
@@ -78,13 +94,20 @@ https://[ユーザー名].github.io/work_2026/
 
 ### GitHub Secretsの設定
 
-GitHub Pagesにデプロイする際、読書リストのパスワードをGitHub Secretsで管理します。
+GitHub Pagesにデプロイする際、GitHub Personal Access TokenをGitHub Secretsで管理します。
 
 1. GitHubリポジトリの **Settings** → **Secrets and variables** → **Actions** に移動
 2. **New repository secret** をクリック
-3. 以下の設定を追加：
-   - Name: `ADMIN_PASSWORD`
-   - Secret: `0313`（またはお好みのパスワード）
-4. **Add secret** をクリック
+3. 以下のシークレットを追加：
 
-これにより、GitHub Actionsのビルド時に自動的にパスワードが設定されます。
+   **読書リスト用のGitHub Token:**
+   - Name: `VITE_GITHUB_TOKEN`
+   - Secret: 上記で作成したPersonal Access Token（`ghp_xxx...`）を貼り付け
+   - **Add secret** をクリック
+
+これにより、GitHub Actionsのビルド時に自動的にトークンが環境変数として設定され、読書リスト機能が動作します。
+
+⚠️ **セキュリティ注意**:
+- トークンは絶対にコードにハードコードしないでください
+- `.env.local`ファイルは絶対にGitにコミットしないでください（`.gitignore`で除外済み）
+- トークンが漏洩した場合は、すぐにGitHubで無効化し、新しいトークンを生成してください
