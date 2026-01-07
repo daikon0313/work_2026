@@ -1,89 +1,155 @@
 .reading-list-page {
-  min-height: calc(100vh - 80px);
-  background: #f5f7fa;
-  padding: 2rem 0;
-}
-
-.reading-list-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 1rem;
+  padding: 2rem;
 }
 
-.page-title {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #333;
-  margin: 0 0 0.5rem 0;
-}
-
-.page-description {
-  font-size: 1rem;
-  color: #666;
-  margin: 0 0 2rem 0;
-}
-
-.add-reading-btn {
-  width: 100%;
-  padding: 1rem;
-  background: #2196f3;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.2s;
+.reading-list-header {
   margin-bottom: 2rem;
 }
 
-.add-reading-btn:hover {
-  background: #1976d2;
+.reading-list-header h1 {
+  margin: 0 0 0.5rem 0;
+  font-size: 2rem;
+  color: var(--text-color);
 }
 
-.reading-section {
-  margin-bottom: 3rem;
-}
-
-.section-title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #333;
-  margin: 0 0 1.5rem 0;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.count {
+.reading-list-header p {
+  margin: 0;
+  color: var(--text-light);
   font-size: 1rem;
-  font-weight: 400;
-  color: #888;
 }
 
-.reading-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 1.5rem;
-}
-
-.empty-message {
-  color: #999;
+.reading-list-loading {
   text-align: center;
-  padding: 3rem 0;
+  padding: 3rem;
+  color: var(--text-light);
+}
+
+.reading-list-spinner {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--border-color);
+  border-top-color: var(--primary-color);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.reading-list-error {
+  padding: 1rem;
+  margin-bottom: 2rem;
+  background-color: #fee;
+  border: 1px solid #fcc;
+  border-radius: 0.5rem;
+  color: #c33;
+}
+
+.reading-list-error button {
+  margin-top: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: #c33;
+  color: white;
+  border: none;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+.reading-list-error button:hover {
+  background-color: #a22;
+}
+
+.reading-list-tabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.reading-list-tab {
+  padding: 0.75rem 1.5rem;
+  background: none;
+  border: none;
+  color: var(--text-light);
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.reading-list-tab:hover {
+  color: var(--text-color);
+}
+
+.reading-list-tab.active {
+  color: var(--primary-color);
+}
+
+.reading-list-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: var(--primary-color);
+}
+
+.reading-list-tab-count {
+  display: inline-block;
+  margin-left: 0.5rem;
+  padding: 0.125rem 0.5rem;
+  background-color: var(--background-alt);
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.reading-list-tab.active .reading-list-tab-count {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.reading-list-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.reading-list-empty {
+  text-align: center;
+  padding: 3rem;
+  color: var(--text-light);
+}
+
+.reading-list-empty p {
+  margin: 0.5rem 0;
   font-size: 1rem;
 }
 
 @media (max-width: 768px) {
   .reading-list-page {
-    padding: 1rem 0;
+    padding: 1rem;
   }
 
-  .page-title {
+  .reading-list-header h1 {
     font-size: 1.5rem;
   }
 
-  .reading-grid {
-    grid-template-columns: 1fr;
+  .reading-list-tabs {
+    gap: 0.5rem;
+  }
+
+  .reading-list-tab {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
   }
 }
