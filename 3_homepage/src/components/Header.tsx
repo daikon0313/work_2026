@@ -1,4 +1,5 @@
 import { Link, useLocation } from 'react-router-dom'
+import DarkModeToggle from './DarkModeToggle'
 import './Header.css'
 
 function Header() {
@@ -10,20 +11,23 @@ function Header() {
         <Link to="/" className="logo-link">
           <h1 className="logo">Benjamin Blog</h1>
         </Link>
-        <nav className="nav">
-          <Link
-            to="/"
-            className={`nav-link ${location.pathname === '/' ? 'active' : ''}`}
-          >
-            ブログ
-          </Link>
-          <Link
-            to="/reading-list"
-            className={`nav-link ${location.pathname === '/reading-list' ? 'active' : ''}`}
-          >
-            読書リスト
-          </Link>
-        </nav>
+        <div className="header-right">
+          <nav className="nav">
+            <Link
+              to="/"
+              className={`nav-link ${location.pathname === '/' ? 'active' : ''}`}
+            >
+              ブログ
+            </Link>
+            <Link
+              to="/reading-list"
+              className={`nav-link ${location.pathname === '/reading-list' ? 'active' : ''}`}
+            >
+              読書リスト
+            </Link>
+          </nav>
+          <DarkModeToggle />
+        </div>
       </div>
     </header>
   )

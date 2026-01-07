@@ -1,0 +1,23 @@
+.dark-mode-toggle {
+  background: var(--background-alt);
+  border: 1px solid var(--border-color);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.dark-mode-toggle:hover {
+  background: var(--background);
+  transform: scale(1.1);
+  box-shadow: var(--shadow);
+}
+
+.dark-mode-toggle:active {
+  transform: scale(0.95);
+}

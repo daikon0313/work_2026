@@ -26,6 +26,12 @@
   margin: 0;
 }
 
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
 .nav {
   display: flex;
   gap: 1.5rem;
