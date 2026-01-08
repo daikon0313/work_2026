@@ -5,7 +5,6 @@ export const ARTICLE_LABELS = [
   'モデリング',
   'dbt',
   'Terraform',
-  '日記',
   'その他'
 ] as const
 

@@ -3,7 +3,7 @@ import SearchBar from '../components/SearchBar'
 import LabelFilter from '../components/LabelFilter'
 import SortSelector from '../components/SortSelector'
 import ArticleList from '../components/ArticleList'
-import { articles } from '../data/articles'
+import { articles } from '../article_data/articles'
 import type { ArticleLabel } from '../types/article'
 import type { SortOption } from '../components/SortSelector'
 

@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-import { articles } from '../data/articles'
+import { articles } from '../article_data/articles'
 import './ArticlePage.css'
 
 function ArticlePage() {

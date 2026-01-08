@@ -13,7 +13,6 @@ const LABEL_COLORS: Record<string, string> = {
   モデリング: '#10B981',
   dbt: '#FF694B',
   Terraform: '#7B42BC',
-  日記: '#F59E0B',
   その他: '#6B7280',
 }
 

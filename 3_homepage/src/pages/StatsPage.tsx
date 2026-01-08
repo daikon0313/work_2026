@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { articles } from '../data/articles'
+import { articles } from '../article_data/articles'
 import { useReadingIssues } from '../hooks/useReadingIssues'
 import BlogStats from '../components/BlogStats'
 import ReadingStats from '../components/ReadingStats'

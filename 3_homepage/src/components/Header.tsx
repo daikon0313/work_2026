@@ -18,13 +18,19 @@ function Header() {
               to="/"
               className={`nav-link ${location.pathname === '/' ? 'active' : ''}`}
             >
-              ブログ
+              記事
             </Link>
             <Link
               to="/reading-list"
               className={`nav-link ${location.pathname === '/reading-list' ? 'active' : ''}`}
             >
               読書リスト
+            </Link>
+            <Link
+              to="/daily"
+              className={`nav-link ${location.pathname === '/daily' ? 'active' : ''}`}
+            >
+              日記
             </Link>
           </nav>
           <StatsButton />
