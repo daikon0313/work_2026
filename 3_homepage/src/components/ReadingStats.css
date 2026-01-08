@@ -1,0 +1,200 @@
+.reading-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.stats-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.stats-card {
+  background: var(--background-alt);
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: var(--shadow);
+  transition: transform 0.2s;
+}
+
+.stats-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.stats-card-label {
+  font-size: 0.875rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+
+.stats-card-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+.read-card .stats-card-value {
+  color: #10b981;
+}
+
+.unread-card .stats-card-value {
+  color: #f59e0b;
+}
+
+.stats-card-unit {
+  font-size: 1rem;
+  color: var(--text-light);
+  margin-top: 0.25rem;
+}
+
+.stats-section {
+  background: var(--background-alt);
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  padding: 2rem;
+}
+
+.stats-section h2 {
+  margin: 0 0 1.5rem 0;
+  font-size: 1.5rem;
+  color: var(--text-color);
+}
+
+/* プログレスバー */
+.progress-bar-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.progress-bar {
+  height: 60px;
+  background: var(--background);
+  border: 2px solid var(--border-color);
+  border-radius: 30px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+  border-radius: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: width 0.5s ease;
+  min-width: 60px;
+}
+
+.progress-text {
+  color: white;
+  font-weight: 700;
+  font-size: 1.25rem;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.progress-text-outside {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--text-color);
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+/* 棒グラフ */
+.bar-chart {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-end;
+  height: 250px;
+  padding: 1rem;
+  background: var(--background);
+  border-radius: 0.5rem;
+}
+
+.bar-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 40px;
+}
+
+.bar-value {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-color);
+  min-height: 1rem;
+}
+
+.bar-fill {
+  width: 100%;
+  background: var(--primary-color);
+  border-radius: 4px 4px 0 0;
+  transition: all 0.3s ease;
+  min-height: 4px;
+}
+
+.bar-fill:hover {
+  background: var(--secondary-color);
+  transform: scaleY(1.05);
+}
+
+.bar-label {
+  font-size: 0.75rem;
+  color: var(--text-light);
+  white-space: nowrap;
+}
+
+/* モバイル対応 */
+@media (max-width: 768px) {
+  .stats-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-card-value {
+    font-size: 2rem;
+  }
+
+  .progress-bar {
+    height: 50px;
+  }
+
+  .progress-text,
+  .progress-text-outside {
+    font-size: 1rem;
+  }
+
+  .bar-chart {
+    overflow-x: auto;
+    gap: 0.25rem;
+  }
+
+  .bar-item {
+    min-width: 30px;
+  }
+
+  .bar-label {
+    font-size: 0.625rem;
+  }
+
+  .bar-value {
+    font-size: 0.625rem;
+  }
+
+  .stats-section {
+    padding: 1rem;
+  }
+
+  .stats-section h2 {
+    font-size: 1.25rem;
+  }
+}

@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom'
 import DarkModeToggle from './DarkModeToggle'
+import StatsButton from './StatsButton'
 import './Header.css'
 
 function Header() {
@@ -26,6 +27,7 @@ function Header() {
               読書リスト
             </Link>
           </nav>
+          <StatsButton />
           <DarkModeToggle />
         </div>
       </div>

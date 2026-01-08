@@ -1,0 +1,199 @@
+.blog-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.stats-card {
+  background: var(--background-alt);
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: var(--shadow);
+  transition: transform 0.2s;
+}
+
+.stats-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.total-card {
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.stats-card-label {
+  font-size: 0.875rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+
+.stats-card-value {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+.stats-card-unit {
+  font-size: 1rem;
+  color: var(--text-light);
+  margin-top: 0.25rem;
+}
+
+.stats-section {
+  background: var(--background-alt);
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  padding: 2rem;
+}
+
+.stats-section h2 {
+  margin: 0 0 1.5rem 0;
+  font-size: 1.5rem;
+  color: var(--text-color);
+}
+
+/* 円グラフ */
+.pie-chart-container {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.pie-chart {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  box-shadow: var(--shadow);
+  flex-shrink: 0;
+}
+
+.pie-legend {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.legend-color {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.legend-label {
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.legend-value {
+  margin-left: auto;
+  color: var(--text-light);
+  font-size: 0.875rem;
+}
+
+/* 棒グラフ */
+.bar-chart {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-end;
+  height: 250px;
+  padding: 1rem;
+  background: var(--background);
+  border-radius: 0.5rem;
+}
+
+.bar-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 40px;
+}
+
+.bar-value {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-color);
+  min-height: 1rem;
+}
+
+.bar-fill {
+  width: 100%;
+  background: var(--primary-color);
+  border-radius: 4px 4px 0 0;
+  transition: all 0.3s ease;
+  min-height: 4px;
+}
+
+.bar-fill:hover {
+  background: var(--secondary-color);
+  transform: scaleY(1.05);
+}
+
+.bar-label {
+  font-size: 0.75rem;
+  color: var(--text-light);
+  white-space: nowrap;
+}
+
+.stats-empty {
+  text-align: center;
+  padding: 3rem;
+  background: var(--background-alt);
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+}
+
+.stats-empty p {
+  margin: 0.5rem 0;
+  color: var(--text-light);
+  font-size: 1rem;
+}
+
+/* モバイル対応 */
+@media (max-width: 768px) {
+  .pie-chart-container {
+    flex-direction: column;
+  }
+
+  .pie-chart {
+    width: 150px;
+    height: 150px;
+  }
+
+  .bar-chart {
+    overflow-x: auto;
+    gap: 0.25rem;
+  }
+
+  .bar-item {
+    min-width: 30px;
+  }
+
+  .bar-label {
+    font-size: 0.625rem;
+  }
+
+  .bar-value {
+    font-size: 0.625rem;
+  }
+
+  .stats-section {
+    padding: 1rem;
+  }
+
+  .stats-section h2 {
+    font-size: 1.25rem;
+  }
+}
