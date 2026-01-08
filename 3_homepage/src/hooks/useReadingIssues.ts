@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react'
-import type { ReadingIssue, CreateReadingIssueInput, MarkAsReadInput } from '../types/reading'
+import type { ReadingIssue, CreateReadingIssueInput, MarkAsReadInput, DeleteReadingIssueInput } from '../types/reading'
 import {
   fetchReadingIssues,
   createReadingIssue,
   markIssueAsRead,
   reopenIssue,
-  fetchIssueComments
+  fetchIssueComments,
+  deleteReadingIssue
 } from '../utils/githubApi'
 
 export function useReadingIssues() {
@@ -83,6 +84,19 @@ export function useReadingIssues() {
     }
   }
 
+  // 削除
+  const deleteIssue = async (input: DeleteReadingIssueInput) => {
+    try {
+      setError(null)
+      await deleteReadingIssue(input)
+      // Issueを再取得して状態を更新
+      await loadIssues()
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to delete issue')
+      throw err
+    }
+  }
+
   // 未読と既読に分類
   const toReadIssues = issues.filter((issue) => issue.state === 'open')
   const readIssues = issues.filter((issue) => issue.state === 'closed')
@@ -96,6 +110,7 @@ export function useReadingIssues() {
     addIssue,
     markAsRead,
     markAsUnread,
+    deleteIssue,
     reload: loadIssues,
   }
 }

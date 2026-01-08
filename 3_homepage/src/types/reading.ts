@@ -5,7 +5,6 @@ export interface ReadingIssue {
   title: string
   url: string
   articleUrl: string // 記事のURL
-  reason: string // 読みたい理由
   state: 'open' | 'closed'
   createdAt: string
   closedAt?: string
@@ -15,7 +14,12 @@ export interface ReadingIssue {
 export interface CreateReadingIssueInput {
   title: string
   url: string
-  reason: string
+  password: string
+}
+
+export interface DeleteReadingIssueInput {
+  issueNumber: number
+  password: string
 }
 
 export interface MarkAsReadInput {

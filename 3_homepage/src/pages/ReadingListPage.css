@@ -119,9 +119,15 @@
 }
 
 .reading-list-content {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
   gap: 1rem;
+}
+
+@media (max-width: 1200px) {
+  .reading-list-content {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 .reading-list-empty {
@@ -151,5 +157,9 @@
   .reading-list-tab {
     padding: 0.5rem 1rem;
     font-size: 0.875rem;
+  }
+
+  .reading-list-content {
+    grid-template-columns: 1fr;
   }
 }

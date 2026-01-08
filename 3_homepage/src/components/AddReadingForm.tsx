@@ -10,7 +10,7 @@ function AddReadingForm({ onAdd }: AddReadingFormProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [title, setTitle] = useState('')
   const [url, setUrl] = useState('')
-  const [reason, setReason] = useState('')
+  const [password, setPassword] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -18,18 +18,18 @@ function AddReadingForm({ onAdd }: AddReadingFormProps) {
     e.preventDefault()
     setError(null)
 
-    if (!title.trim() || !url.trim() || !reason.trim()) {
+    if (!title.trim() || !url.trim() || !password.trim()) {
       setError('すべてのフィールドを入力してください')
       return
     }
 
     setIsSubmitting(true)
     try {
-      await onAdd({ title, url, reason })
+      await onAdd({ title, url, password })
       // リセット
       setTitle('')
       setUrl('')
-      setReason('')
+      setPassword('')
       setIsOpen(false)
     } catch (err) {
       setError(err instanceof Error ? err.message : '追加に失敗しました')
@@ -41,7 +41,7 @@ function AddReadingForm({ onAdd }: AddReadingFormProps) {
   const handleCancel = () => {
     setTitle('')
     setUrl('')
-    setReason('')
+    setPassword('')
     setError(null)
     setIsOpen(false)
   }
@@ -92,12 +92,13 @@ function AddReadingForm({ onAdd }: AddReadingFormProps) {
         </div>
 
         <div className="add-reading-form-group">
-          <label htmlFor="reason">読みたい理由</label>
-          <textarea
-            id="reason"
-            value={reason}
-            onChange={(e) => setReason(e.target.value)}
-            placeholder="なぜこの記事を読みたいのか..."
+          <label htmlFor="password">管理者パスワード</label>
+          <input
+            type="password"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="パスワードを入力"
             disabled={isSubmitting}
           />
         </div>

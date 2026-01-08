@@ -15,6 +15,7 @@ function ReadingListPage() {
     addIssue,
     markAsRead,
     markAsUnread,
+    deleteIssue,
     reload
   } = useReadingIssues()
 
@@ -37,7 +38,6 @@ function ReadingListPage() {
     <div className="reading-list-page">
       <div className="reading-list-header">
         <h1>📚 読書リスト</h1>
-        <p>GitHub Issuesで管理する読みたい記事リスト</p>
       </div>
 
       {error && (
@@ -87,6 +87,7 @@ function ReadingListPage() {
               issue={issue}
               onMarkAsRead={activeTab === 'to-read' ? markAsRead : undefined}
               onMarkAsUnread={activeTab === 'read' ? markAsUnread : undefined}
+              onDelete={activeTab === 'to-read' ? deleteIssue : undefined}
             />
           ))
         )}

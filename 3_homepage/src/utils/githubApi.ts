@@ -1,5 +1,5 @@
 import { GITHUB_CONFIG, getGitHubToken } from '../config/github'
-import type { ReadingIssue, CreateReadingIssueInput, MarkAsReadInput } from '../types/reading'
+import type { ReadingIssue, CreateReadingIssueInput, MarkAsReadInput, DeleteReadingIssueInput } from '../types/reading'
 
 const API_BASE = 'https://api.github.com'
 
@@ -14,21 +14,19 @@ function getHeaders(): HeadersInit {
 }
 
 // Issueボディのパース
-function parseIssueBody(body: string | null): { url: string; reason: string } {
-  if (!body) return { url: '', reason: '' }
+function parseIssueBody(body: string | null): { url: string } {
+  if (!body) return { url: '' }
 
   const urlMatch = body.match(/URL:\s*(.+)/)
-  const reasonMatch = body.match(/読みたい理由:\s*([\s\S]+)/)
 
   return {
     url: urlMatch ? urlMatch[1].trim() : '',
-    reason: reasonMatch ? reasonMatch[1].trim() : '',
   }
 }
 
 // GitHub Issueを読書リストアイテムに変換
 function transformIssueToReadingItem(issue: any): ReadingIssue {
-  const { url, reason } = parseIssueBody(issue.body)
+  const { url } = parseIssueBody(issue.body)
 
   // タイトルから「[読みたい記事] 」プレフィックスを除去
   const title = issue.title.replace(/^\[読みたい記事\]\s*/, '')
@@ -38,7 +36,6 @@ function transformIssueToReadingItem(issue: any): ReadingIssue {
     title,
     url: issue.html_url,
     articleUrl: url,
-    reason,
     state: issue.state,
     createdAt: issue.created_at,
     closedAt: issue.closed_at,
@@ -76,9 +73,7 @@ export async function createReadingIssue(input: CreateReadingIssueInput): Promis
   try {
     const url = `${API_BASE}/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/issues`
 
-    const body = `URL: ${input.url}
-
-読みたい理由: ${input.reason}`
+    const body = `URL: ${input.url}`
 
     const response = await fetch(url, {
       method: 'POST',
@@ -194,5 +189,33 @@ export async function fetchIssueComments(issueNumber: number): Promise<string | 
   } catch (error) {
     console.error('Failed to fetch comments:', error)
     return null
+  }
+}
+
+// Issueを削除（実際にはクローズ＋削除ラベル追加）
+export async function deleteReadingIssue(input: DeleteReadingIssueInput): Promise<void> {
+  const token = getGitHubToken()
+  if (!token) {
+    throw new Error('GitHub token is required to delete issues')
+  }
+
+  try {
+    const issueUrl = `${API_BASE}/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/issues/${input.issueNumber}`
+
+    const response = await fetch(issueUrl, {
+      method: 'PATCH',
+      headers: getHeaders(),
+      body: JSON.stringify({
+        state: 'closed',
+        labels: [GITHUB_CONFIG.label, 'deleted'],
+      }),
+    })
+
+    if (!response.ok) {
+      throw new Error(`Failed to delete issue: ${response.statusText}`)
+    }
+  } catch (error) {
+    console.error('Failed to delete issue:', error)
+    throw error
   }
 }

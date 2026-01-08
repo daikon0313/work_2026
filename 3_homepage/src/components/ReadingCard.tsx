@@ -1,16 +1,19 @@
 import { useState } from 'react'
-import type { ReadingIssue, MarkAsReadInput } from '../types/reading'
+import type { ReadingIssue, MarkAsReadInput, DeleteReadingIssueInput } from '../types/reading'
 import './ReadingCard.css'
 
 interface ReadingCardProps {
   issue: ReadingIssue
   onMarkAsRead?: (input: MarkAsReadInput) => Promise<void>
   onMarkAsUnread?: (issueNumber: number) => Promise<void>
+  onDelete?: (input: DeleteReadingIssueInput) => Promise<void>
 }
 
-function ReadingCard({ issue, onMarkAsRead, onMarkAsUnread }: ReadingCardProps) {
+function ReadingCard({ issue, onMarkAsRead, onMarkAsUnread, onDelete }: ReadingCardProps) {
   const [showImpressionForm, setShowImpressionForm] = useState(false)
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
   const [impression, setImpression] = useState('')
+  const [password, setPassword] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const handleMarkAsRead = async () => {
@@ -44,6 +47,25 @@ function ReadingCard({ issue, onMarkAsRead, onMarkAsUnread }: ReadingCardProps) 
     }
   }
 
+  const handleDelete = async () => {
+    if (!onDelete || !password.trim()) return
+
+    setIsSubmitting(true)
+    try {
+      await onDelete({
+        issueNumber: issue.number,
+        password
+      })
+      setShowDeleteConfirm(false)
+      setPassword('')
+    } catch (error) {
+      console.error('Failed to delete:', error)
+      alert('削除に失敗しました。パスワードを確認してください。')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('ja-JP', {
       year: 'numeric',
@@ -72,10 +94,6 @@ function ReadingCard({ issue, onMarkAsRead, onMarkAsUnread }: ReadingCardProps) 
         )}
       </div>
 
-      <div className="reading-card-reason">
-        <p><strong>読みたい理由:</strong> {issue.reason}</p>
-      </div>
-
       {issue.state === 'closed' && issue.impression && (
         <div className="reading-card-impression">
           <h4>📝 読了感想</h4>
@@ -85,14 +103,23 @@ function ReadingCard({ issue, onMarkAsRead, onMarkAsUnread }: ReadingCardProps) 
 
       {issue.state === 'open' && (
         <div className="reading-card-actions">
-          {!showImpressionForm ? (
-            <button
-              className="reading-card-btn primary"
-              onClick={() => setShowImpressionForm(true)}
-            >
-              読了にする
-            </button>
-          ) : (
+          {!showImpressionForm && !showDeleteConfirm ? (
+            <>
+              <button
+                className="reading-card-btn primary"
+                onClick={() => setShowImpressionForm(true)}
+              >
+                読了にする
+              </button>
+              <button
+                className="reading-card-btn delete"
+                onClick={() => setShowDeleteConfirm(true)}
+                title="削除"
+              >
+                ×
+              </button>
+            </>
+          ) : showImpressionForm ? (
             <>
               <div style={{ width: '100%' }}>
                 <textarea
@@ -125,6 +152,47 @@ function ReadingCard({ issue, onMarkAsRead, onMarkAsUnread }: ReadingCardProps) 
                     onClick={() => {
                       setShowImpressionForm(false)
                       setImpression('')
+                    }}
+                    disabled={isSubmitting}
+                  >
+                    キャンセル
+                  </button>
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
+              <div style={{ width: '100%' }}>
+                <p style={{ marginBottom: '0.5rem', fontSize: '0.875rem' }}>本当に削除しますか？</p>
+                <input
+                  type="password"
+                  placeholder="管理者パスワードを入力"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  style={{
+                    width: '100%',
+                    padding: '0.5rem',
+                    borderRadius: '0.375rem',
+                    border: '1px solid var(--border-color)',
+                    backgroundColor: 'var(--background)',
+                    color: 'var(--text-color)',
+                    fontSize: '0.875rem',
+                    marginBottom: '0.5rem'
+                  }}
+                />
+                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                  <button
+                    className="reading-card-btn danger"
+                    onClick={handleDelete}
+                    disabled={!password.trim() || isSubmitting}
+                  >
+                    {isSubmitting ? '削除中...' : '削除する'}
+                  </button>
+                  <button
+                    className="reading-card-btn secondary"
+                    onClick={() => {
+                      setShowDeleteConfirm(false)
+                      setPassword('')
                     }}
                     disabled={isSubmitting}
                   >
