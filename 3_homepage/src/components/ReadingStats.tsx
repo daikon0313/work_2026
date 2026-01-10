@@ -12,6 +12,10 @@ function ReadingStats({ issues }: ReadingStatsProps) {
   const maxCount = Math.max(...stats.monthlyAdded.map((d) => d.count), 1)
   const hasMonthlyData = stats.monthlyAdded.some((d) => d.count > 0)
 
+  // デバッグログ
+  console.log('ReadingStats - maxCount:', maxCount)
+  console.log('ReadingStats - monthlyAdded:', stats.monthlyAdded)
+
   return (
     <div className="reading-stats">
       {/* 統計カード（3つ横並び） */}
@@ -60,18 +64,23 @@ function ReadingStats({ issues }: ReadingStatsProps) {
         <div className="stats-section">
           <h2>月別追加数（最近12ヶ月）</h2>
           <div className="bar-chart">
-            {stats.monthlyAdded.map((item) => (
-              <div key={item.month} className="bar-item">
-                <div className="bar-value">{item.count > 0 ? item.count : ''}</div>
-                <div
-                  className="bar-fill"
-                  style={{
-                    height: `${(item.count / maxCount) * 100}%`,
-                  }}
-                ></div>
-                <div className="bar-label">{item.month.substring(5)}</div>
-              </div>
-            ))}
+            {stats.monthlyAdded.map((item) => {
+              const percentage = (item.count / maxCount) * 100
+              console.log(`ReadingStats - ${item.month}: count=${item.count}, percentage=${percentage.toFixed(2)}%`)
+
+              return (
+                <div key={item.month} className="bar-item">
+                  <div className="bar-value">{item.count > 0 ? item.count : ''}</div>
+                  <div
+                    className="bar-fill"
+                    style={{
+                      height: `${percentage}%`,
+                    }}
+                  ></div>
+                  <div className="bar-label">{item.month.substring(5)}</div>
+                </div>
+              )
+            })}
           </div>
         </div>
       )}
