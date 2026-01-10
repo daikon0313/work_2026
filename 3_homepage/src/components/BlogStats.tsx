@@ -44,6 +44,10 @@ function BlogStats({ articles }: BlogStatsProps) {
 
   const maxCount = Math.max(...stats.monthlyPosts.map((d) => d.count), 1)
 
+  // デバッグログ
+  console.log('BlogStats - maxCount:', maxCount)
+  console.log('BlogStats - monthlyPosts:', stats.monthlyPosts)
+
   return (
     <div className="blog-stats">
       {/* 記事総数カード */}
@@ -84,18 +88,25 @@ function BlogStats({ articles }: BlogStatsProps) {
       <div className="stats-section">
         <h2>月別投稿数（最近12ヶ月）</h2>
         <div className="bar-chart">
-          {stats.monthlyPosts.map((item) => (
-            <div key={item.month} className="bar-item">
-              <div className="bar-value">{item.count > 0 ? item.count : ''}</div>
-              <div
-                className="bar-fill"
-                style={{
-                  height: `${(item.count / maxCount) * 100}%`,
-                }}
-              ></div>
-              <div className="bar-label">{item.month.substring(5)}</div>
-            </div>
-          ))}
+          {stats.monthlyPosts.map((item) => {
+            // 最大高さ200pxに対する高さを計算
+            const maxHeight = 200
+            const height = maxCount > 0 ? (item.count / maxCount) * maxHeight : 0
+            console.log(`BlogStats - ${item.month}: count=${item.count}, height=${height.toFixed(2)}px`)
+
+            return (
+              <div key={item.month} className="bar-item">
+                <div className="bar-value">{item.count > 0 ? item.count : ''}</div>
+                <div
+                  className="bar-fill"
+                  style={{
+                    height: item.count > 0 ? `${height}px` : '0px',
+                  }}
+                ></div>
+                <div className="bar-label">{item.month.substring(5)}</div>
+              </div>
+            )
+          })}
         </div>
       </div>
     </div>
