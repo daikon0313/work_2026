@@ -113,7 +113,7 @@
   display: flex;
   gap: 0.5rem;
   align-items: flex-end;
-  height: 250px;
+  height: 280px;
   padding: 1rem;
   background: var(--background);
   border-radius: 0.5rem;
@@ -124,8 +124,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-end;
   gap: 0.5rem;
   min-width: 40px;
+  height: 100%;
 }
 
 .bar-value {
@@ -133,6 +135,7 @@
   font-weight: 600;
   color: var(--text-color);
   min-height: 1rem;
+  order: -1;
 }
 
 .bar-fill {
@@ -140,7 +143,6 @@
   background: var(--primary-color);
   border-radius: 4px 4px 0 0;
   transition: all 0.3s ease;
-  min-height: 4px;
 }
 
 .bar-fill:hover {
@@ -152,6 +154,7 @@
   font-size: 0.75rem;
   color: var(--text-light);
   white-space: nowrap;
+  order: 1;
 }
 
 /* モバイル対応 */

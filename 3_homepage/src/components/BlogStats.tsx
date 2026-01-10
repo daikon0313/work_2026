@@ -89,8 +89,10 @@ function BlogStats({ articles }: BlogStatsProps) {
         <h2>月別投稿数（最近12ヶ月）</h2>
         <div className="bar-chart">
           {stats.monthlyPosts.map((item) => {
-            const percentage = (item.count / maxCount) * 100
-            console.log(`BlogStats - ${item.month}: count=${item.count}, percentage=${percentage.toFixed(2)}%`)
+            // 最大高さ200pxに対する高さを計算
+            const maxHeight = 200
+            const height = maxCount > 0 ? (item.count / maxCount) * maxHeight : 0
+            console.log(`BlogStats - ${item.month}: count=${item.count}, height=${height.toFixed(2)}px`)
 
             return (
               <div key={item.month} className="bar-item">
@@ -98,7 +100,7 @@ function BlogStats({ articles }: BlogStatsProps) {
                 <div
                   className="bar-fill"
                   style={{
-                    height: `${percentage}%`,
+                    height: item.count > 0 ? `${height}px` : '0px',
                   }}
                 ></div>
                 <div className="bar-label">{item.month.substring(5)}</div>
