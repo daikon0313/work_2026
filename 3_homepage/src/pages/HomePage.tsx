@@ -1,9 +1,11 @@
 import { useState, useMemo } from 'react'
 import SearchBar from '../components/SearchBar'
+import TagCloud from '../components/TagCloud'
 import LabelFilter from '../components/LabelFilter'
 import SortSelector from '../components/SortSelector'
 import ArticleList from '../components/ArticleList'
 import { articles } from '../article_data/articles'
+import { calculateTagStatistics } from '../utils/tagUtils'
 import type { ArticleLabel } from '../types/article'
 import type { SortOption } from '../components/SortSelector'
 
@@ -12,12 +14,16 @@ function HomePage() {
   const [selectedLabel, setSelectedLabel] = useState<ArticleLabel | null>(null)
   const [sortOption, setSortOption] = useState<SortOption>('newest')
 
+  // タグ統計を計算
+  const tagStatistics = useMemo(() => calculateTagStatistics(articles), [])
+
   const filteredAndSortedArticles = useMemo(() => {
     // フィルタリング
     const filtered = articles.filter((article) => {
       const matchesSearch =
         article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         article.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        article.labels.some(label => label.toLowerCase().includes(searchQuery.toLowerCase())) ||
         (article.excerpt?.toLowerCase().includes(searchQuery.toLowerCase()) ?? false)
 
       const matchesLabel = selectedLabel === null || article.labels.includes(selectedLabel)
@@ -35,10 +41,31 @@ function HomePage() {
     })
   }, [searchQuery, selectedLabel, sortOption])
 
+  const handleTagClick = (tag: ArticleLabel) => {
+    if (selectedLabel === tag) {
+      setSelectedLabel(null)
+    } else {
+      setSelectedLabel(tag)
+    }
+  }
+
+  const handleClearSearch = () => {
+    setSearchQuery('')
+  }
+
   return (
     <main className="main-content">
       <div className="search-section">
-        <SearchBar value={searchQuery} onChange={setSearchQuery} />
+        <SearchBar
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
+          onClear={handleClearSearch}
+        />
+        <TagCloud
+          tags={tagStatistics}
+          selectedTag={selectedLabel}
+          onTagClick={handleTagClick}
+        />
         <div className="filter-sort-section">
           <LabelFilter selectedLabel={selectedLabel} onSelectLabel={setSelectedLabel} />
           <SortSelector value={sortOption} onChange={setSortOption} />
