@@ -38,6 +38,18 @@ function ArticlePage() {
               ))}
             </div>
           </div>
+          {article.discussionUrl && (
+            <div className="article-discussion">
+              <a
+                href={article.discussionUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="discussion-link"
+              >
+                💬 この記事についてディスカッションする
+              </a>
+            </div>
+          )}
         </header>
         <div className="article-content">
           <ReactMarkdown remarkPlugins={[remarkGfm]}>
