@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import type { ReadingIssue, MarkAsReadInput, DeleteReadingIssueInput } from '../types/reading'
+import type { ReadingIssue, MarkAsReadInput, DeleteReadingIssueInput, UpdateProgressInput } from '../types/reading'
 import './ReadingCard.css'
 
 interface ReadingCardProps {
@@ -7,13 +7,16 @@ interface ReadingCardProps {
   onMarkAsRead?: (input: MarkAsReadInput) => Promise<void>
   onMarkAsUnread?: (issueNumber: number) => Promise<void>
   onDelete?: (input: DeleteReadingIssueInput) => Promise<void>
+  onUpdateProgress?: (input: UpdateProgressInput) => Promise<void>
 }
 
-function ReadingCard({ issue, onMarkAsRead, onMarkAsUnread, onDelete }: ReadingCardProps) {
+function ReadingCard({ issue, onMarkAsRead, onMarkAsUnread, onDelete, onUpdateProgress }: ReadingCardProps) {
   const [showImpressionForm, setShowImpressionForm] = useState(false)
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+  const [showProgressForm, setShowProgressForm] = useState(false)
   const [impression, setImpression] = useState('')
   const [password, setPassword] = useState('')
+  const [progress, setProgress] = useState(issue.progress?.toString() || '0')
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const handleMarkAsRead = async () => {
@@ -66,6 +69,30 @@ function ReadingCard({ issue, onMarkAsRead, onMarkAsUnread, onDelete }: ReadingC
     }
   }
 
+  const handleUpdateProgress = async () => {
+    if (!onUpdateProgress) return
+
+    const progressNum = parseInt(progress)
+    if (isNaN(progressNum) || progressNum < 0 || progressNum > 100) {
+      alert('進捗率は0-100の範囲で入力してください')
+      return
+    }
+
+    setIsSubmitting(true)
+    try {
+      await onUpdateProgress({
+        issueNumber: issue.number,
+        progress: progressNum
+      })
+      setShowProgressForm(false)
+    } catch (error) {
+      console.error('Failed to update progress:', error)
+      alert('進捗の更新に失敗しました')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('ja-JP', {
       year: 'numeric',
@@ -101,13 +128,55 @@ function ReadingCard({ issue, onMarkAsRead, onMarkAsUnread, onDelete }: ReadingC
         </div>
       )}
 
+      {issue.state === 'open' && issue.progress !== undefined && issue.progress > 0 && (
+        <div className="reading-card-progress" style={{ marginTop: '1rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+            <span style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--text-color)' }}>
+              📖 読書進捗
+            </span>
+            <span style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--primary-color)' }}>
+              {issue.progress}%
+            </span>
+          </div>
+          <div style={{
+            width: '100%',
+            height: '8px',
+            backgroundColor: 'var(--background)',
+            borderRadius: '4px',
+            overflow: 'hidden',
+            border: '1px solid var(--border-color)'
+          }}>
+            <div style={{
+              width: `${issue.progress}%`,
+              height: '100%',
+              backgroundColor: 'var(--primary-color)',
+              transition: 'width 0.3s ease',
+              borderRadius: '4px'
+            }}></div>
+          </div>
+          {issue.startedAt && (
+            <div style={{ fontSize: '0.75rem', color: 'var(--text-light)', marginTop: '0.25rem' }}>
+              開始: {formatDate(issue.startedAt)}
+            </div>
+          )}
+        </div>
+      )}
+
       {issue.state === 'open' && (
         <div className="reading-card-actions">
-          {!showImpressionForm && !showDeleteConfirm ? (
+          {!showImpressionForm && !showDeleteConfirm && !showProgressForm ? (
             <>
+              <button
+                className="reading-card-btn secondary"
+                onClick={() => setShowProgressForm(true)}
+                style={{ flex: 1 }}
+              >
+                進捗を更新
+              </button>
               <button
                 className="reading-card-btn primary"
                 onClick={() => setShowImpressionForm(true)}
+                style={{ flex: 1 }}
               >
                 読了にする
               </button>
@@ -118,6 +187,51 @@ function ReadingCard({ issue, onMarkAsRead, onMarkAsUnread, onDelete }: ReadingC
               >
                 ×
               </button>
+            </>
+          ) : showProgressForm ? (
+            <>
+              <div style={{ width: '100%' }}>
+                <p style={{ marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: 600 }}>
+                  読書進捗を更新 (0-100%)
+                </p>
+                <input
+                  type="number"
+                  min="0"
+                  max="100"
+                  placeholder="進捗率を入力 (0-100)"
+                  value={progress}
+                  onChange={(e) => setProgress(e.target.value)}
+                  style={{
+                    width: '100%',
+                    padding: '0.5rem',
+                    borderRadius: '0.375rem',
+                    border: '1px solid var(--border-color)',
+                    backgroundColor: 'var(--background)',
+                    color: 'var(--text-color)',
+                    fontSize: '0.875rem',
+                    marginBottom: '0.5rem'
+                  }}
+                />
+                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                  <button
+                    className="reading-card-btn primary"
+                    onClick={handleUpdateProgress}
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? '更新中...' : '更新する'}
+                  </button>
+                  <button
+                    className="reading-card-btn secondary"
+                    onClick={() => {
+                      setShowProgressForm(false)
+                      setProgress(issue.progress?.toString() || '0')
+                    }}
+                    disabled={isSubmitting}
+                  >
+                    キャンセル
+                  </button>
+                </div>
+              </div>
             </>
           ) : showImpressionForm ? (
             <>

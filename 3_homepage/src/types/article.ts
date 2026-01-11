@@ -18,4 +18,5 @@ export interface Article {
   content: string
   createdAt: string
   excerpt?: string
+  discussionUrl?: string
 }

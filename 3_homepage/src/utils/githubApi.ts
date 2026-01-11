@@ -1,5 +1,5 @@
 import { GITHUB_CONFIG, getGitHubToken } from '../config/github'
-import type { ReadingIssue, CreateReadingIssueInput, MarkAsReadInput, DeleteReadingIssueInput } from '../types/reading'
+import type { ReadingIssue, CreateReadingIssueInput, MarkAsReadInput, DeleteReadingIssueInput, UpdateProgressInput } from '../types/reading'
 
 const API_BASE = 'https://api.github.com'
 
@@ -14,19 +14,30 @@ function getHeaders(): HeadersInit {
 }
 
 // Issueボディのパース
-function parseIssueBody(body: string | null): { url: string } {
+function parseIssueBody(body: string | null): {
+  url: string
+  progress?: number
+  readingTimeMinutes?: number
+  startedAt?: string
+} {
   if (!body) return { url: '' }
 
   const urlMatch = body.match(/URL:\s*(.+)/)
+  const progressMatch = body.match(/Progress:\s*(\d+)/)
+  const readingTimeMatch = body.match(/ReadingTime:\s*(\d+)/)
+  const startedAtMatch = body.match(/StartedAt:\s*(.+)/)
 
   return {
     url: urlMatch ? urlMatch[1].trim() : '',
+    progress: progressMatch ? parseInt(progressMatch[1]) : undefined,
+    readingTimeMinutes: readingTimeMatch ? parseInt(readingTimeMatch[1]) : undefined,
+    startedAt: startedAtMatch ? startedAtMatch[1].trim() : undefined,
   }
 }
 
 // GitHub Issueを読書リストアイテムに変換
 function transformIssueToReadingItem(issue: any): ReadingIssue {
-  const { url } = parseIssueBody(issue.body)
+  const { url, progress, readingTimeMinutes, startedAt } = parseIssueBody(issue.body)
 
   // タイトルから「[読みたい記事] 」プレフィックスを除去
   const title = issue.title.replace(/^\[読みたい記事\]\s*/, '')
@@ -39,6 +50,9 @@ function transformIssueToReadingItem(issue: any): ReadingIssue {
     state: issue.state,
     createdAt: issue.created_at,
     closedAt: issue.closed_at,
+    progress,
+    readingTimeMinutes,
+    startedAt,
   }
 }
 
@@ -216,6 +230,65 @@ export async function deleteReadingIssue(input: DeleteReadingIssueInput): Promis
     }
   } catch (error) {
     console.error('Failed to delete issue:', error)
+    throw error
+  }
+}
+
+// 読書進捗を更新
+export async function updateReadingProgress(input: UpdateProgressInput): Promise<ReadingIssue> {
+  const token = getGitHubToken()
+  if (!token) {
+    throw new Error('GitHub token is required to update progress')
+  }
+
+  try {
+    // まず現在のIssue情報を取得
+    const issueUrl = `${API_BASE}/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/issues/${input.issueNumber}`
+    const getResponse = await fetch(issueUrl, {
+      headers: getHeaders(),
+    })
+
+    if (!getResponse.ok) {
+      throw new Error(`Failed to fetch issue: ${getResponse.statusText}`)
+    }
+
+    const currentIssue = await getResponse.json()
+    const { url } = parseIssueBody(currentIssue.body)
+
+    // 進捗情報を含む新しいbodyを作成
+    const currentTime = new Date().toISOString()
+    const existingStartedAt = parseIssueBody(currentIssue.body).startedAt
+
+    let newBody = `URL: ${url}\nProgress: ${input.progress}`
+
+    if (input.readingTimeMinutes !== undefined) {
+      newBody += `\nReadingTime: ${input.readingTimeMinutes}`
+    }
+
+    // 初回進捗更新時に開始時刻を記録
+    if (!existingStartedAt && input.progress > 0) {
+      newBody += `\nStartedAt: ${currentTime}`
+    } else if (existingStartedAt) {
+      newBody += `\nStartedAt: ${existingStartedAt}`
+    }
+
+    // Issueを更新
+    const updateResponse = await fetch(issueUrl, {
+      method: 'PATCH',
+      headers: getHeaders(),
+      body: JSON.stringify({
+        body: newBody,
+      }),
+    })
+
+    if (!updateResponse.ok) {
+      throw new Error(`Failed to update progress: ${updateResponse.statusText}`)
+    }
+
+    const updatedIssue = await updateResponse.json()
+    return transformIssueToReadingItem(updatedIssue)
+  } catch (error) {
+    console.error('Failed to update reading progress:', error)
     throw error
   }
 }

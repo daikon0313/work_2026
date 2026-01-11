@@ -9,6 +9,9 @@ export interface ReadingIssue {
   createdAt: string
   closedAt?: string
   impression?: string // 読んだ感想（コメントから取得）
+  progress?: number // 読書進捗率 (0-100)
+  readingTimeMinutes?: number // 読書時間（分）
+  startedAt?: string // 読書開始日時
 }
 
 export interface CreateReadingIssueInput {
@@ -25,4 +28,10 @@ export interface DeleteReadingIssueInput {
 export interface MarkAsReadInput {
   issueNumber: number
   impression: string
+}
+
+export interface UpdateProgressInput {
+  issueNumber: number
+  progress: number // 0-100
+  readingTimeMinutes?: number // 読書時間（分）
 }
