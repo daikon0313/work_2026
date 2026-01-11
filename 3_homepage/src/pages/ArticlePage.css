@@ -69,32 +69,6 @@
   font-size: 0.85rem;
 }
 
-/* ディスカッションリンク */
-.article-discussion {
-  margin-top: 1rem;
-}
-
-.discussion-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.25rem;
-  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-  color: white;
-  text-decoration: none;
-  border-radius: 0.5rem;
-  font-weight: 600;
-  font-size: 0.95rem;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.discussion-link:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-  color: white;
-}
-
 /* 記事コンテンツ */
 .article-content {
   line-height: 1.8;

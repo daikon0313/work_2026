@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import type { ReadingIssue, CreateReadingIssueInput, MarkAsReadInput, DeleteReadingIssueInput, UpdateProgressInput } from '../types/reading'
+import type { ReadingIssue, CreateReadingIssueInput, MarkAsReadInput, DeleteReadingIssueInput, AddCommentInput } from '../types/reading'
 import {
   fetchReadingIssues,
   createReadingIssue,
@@ -7,7 +7,7 @@ import {
   reopenIssue,
   fetchIssueComments,
   deleteReadingIssue,
-  updateReadingProgress
+  addCommentToIssue
 } from '../utils/githubApi'
 
 export function useReadingIssues() {
@@ -98,15 +98,13 @@ export function useReadingIssues() {
     }
   }
 
-  // 進捗を更新
-  const updateProgress = async (input: UpdateProgressInput) => {
+  // コメントを追加
+  const addComment = async (input: AddCommentInput) => {
     try {
       setError(null)
-      await updateReadingProgress(input)
-      // Issueを再取得して状態を更新
-      await loadIssues()
+      await addCommentToIssue(input)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to update progress')
+      setError(err instanceof Error ? err.message : 'Failed to add comment')
       throw err
     }
   }
@@ -125,7 +123,7 @@ export function useReadingIssues() {
     markAsRead,
     markAsUnread,
     deleteIssue,
-    updateProgress,
+    addComment,
     reload: loadIssues,
   }
 }

@@ -16,7 +16,7 @@ function ReadingListPage() {
     markAsRead,
     markAsUnread,
     deleteIssue,
-    updateProgress,
+    addComment,
     reload
   } = useReadingIssues()
 
@@ -89,7 +89,7 @@ function ReadingListPage() {
               onMarkAsRead={activeTab === 'to-read' ? markAsRead : undefined}
               onMarkAsUnread={activeTab === 'read' ? markAsUnread : undefined}
               onDelete={activeTab === 'to-read' ? deleteIssue : undefined}
-              onUpdateProgress={activeTab === 'to-read' ? updateProgress : undefined}
+              onAddComment={activeTab === 'to-read' ? addComment : undefined}
             />
           ))
         )}
