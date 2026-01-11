@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import type { ReadingIssue, MarkAsReadInput, DeleteReadingIssueInput, UpdateProgressInput } from '../types/reading'
+import type { ReadingIssue, MarkAsReadInput, DeleteReadingIssueInput, AddCommentInput } from '../types/reading'
 import './ReadingCard.css'
 
 interface ReadingCardProps {
@@ -7,16 +7,16 @@ interface ReadingCardProps {
   onMarkAsRead?: (input: MarkAsReadInput) => Promise<void>
   onMarkAsUnread?: (issueNumber: number) => Promise<void>
   onDelete?: (input: DeleteReadingIssueInput) => Promise<void>
-  onUpdateProgress?: (input: UpdateProgressInput) => Promise<void>
+  onAddComment?: (input: AddCommentInput) => Promise<void>
 }
 
-function ReadingCard({ issue, onMarkAsRead, onMarkAsUnread, onDelete, onUpdateProgress }: ReadingCardProps) {
+function ReadingCard({ issue, onMarkAsRead, onMarkAsUnread, onDelete, onAddComment }: ReadingCardProps) {
   const [showImpressionForm, setShowImpressionForm] = useState(false)
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
-  const [showProgressForm, setShowProgressForm] = useState(false)
+  const [showCommentForm, setShowCommentForm] = useState(false)
   const [impression, setImpression] = useState('')
   const [password, setPassword] = useState('')
-  const [progress, setProgress] = useState(issue.progress?.toString() || '0')
+  const [comment, setComment] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const handleMarkAsRead = async () => {
@@ -69,25 +69,21 @@ function ReadingCard({ issue, onMarkAsRead, onMarkAsUnread, onDelete, onUpdatePr
     }
   }
 
-  const handleUpdateProgress = async () => {
-    if (!onUpdateProgress) return
-
-    const progressNum = parseInt(progress)
-    if (isNaN(progressNum) || progressNum < 0 || progressNum > 100) {
-      alert('進捗率は0-100の範囲で入力してください')
-      return
-    }
+  const handleAddComment = async () => {
+    if (!onAddComment || !comment.trim()) return
 
     setIsSubmitting(true)
     try {
-      await onUpdateProgress({
+      await onAddComment({
         issueNumber: issue.number,
-        progress: progressNum
+        comment: comment
       })
-      setShowProgressForm(false)
+      setShowCommentForm(false)
+      setComment('')
+      alert('コメントを追加しました！')
     } catch (error) {
-      console.error('Failed to update progress:', error)
-      alert('進捗の更新に失敗しました')
+      console.error('Failed to add comment:', error)
+      alert('コメントの追加に失敗しました')
     } finally {
       setIsSubmitting(false)
     }
@@ -128,50 +124,16 @@ function ReadingCard({ issue, onMarkAsRead, onMarkAsUnread, onDelete, onUpdatePr
         </div>
       )}
 
-      {issue.state === 'open' && issue.progress !== undefined && issue.progress > 0 && (
-        <div className="reading-card-progress" style={{ marginTop: '1rem' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-            <span style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--text-color)' }}>
-              📖 読書進捗
-            </span>
-            <span style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--primary-color)' }}>
-              {issue.progress}%
-            </span>
-          </div>
-          <div style={{
-            width: '100%',
-            height: '8px',
-            backgroundColor: 'var(--background)',
-            borderRadius: '4px',
-            overflow: 'hidden',
-            border: '1px solid var(--border-color)'
-          }}>
-            <div style={{
-              width: `${issue.progress}%`,
-              height: '100%',
-              backgroundColor: 'var(--primary-color)',
-              transition: 'width 0.3s ease',
-              borderRadius: '4px'
-            }}></div>
-          </div>
-          {issue.startedAt && (
-            <div style={{ fontSize: '0.75rem', color: 'var(--text-light)', marginTop: '0.25rem' }}>
-              開始: {formatDate(issue.startedAt)}
-            </div>
-          )}
-        </div>
-      )}
-
       {issue.state === 'open' && (
         <div className="reading-card-actions">
-          {!showImpressionForm && !showDeleteConfirm && !showProgressForm ? (
+          {!showImpressionForm && !showDeleteConfirm && !showCommentForm ? (
             <>
               <button
                 className="reading-card-btn secondary"
-                onClick={() => setShowProgressForm(true)}
+                onClick={() => setShowCommentForm(true)}
                 style={{ flex: 1 }}
               >
-                進捗を更新
+                💬 コメント
               </button>
               <button
                 className="reading-card-btn primary"
@@ -188,19 +150,17 @@ function ReadingCard({ issue, onMarkAsRead, onMarkAsUnread, onDelete, onUpdatePr
                 ×
               </button>
             </>
-          ) : showProgressForm ? (
+          ) : showCommentForm ? (
             <>
               <div style={{ width: '100%' }}>
                 <p style={{ marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: 600 }}>
-                  読書進捗を更新 (0-100%)
+                  この記事にコメントする
                 </p>
-                <input
-                  type="number"
-                  min="0"
-                  max="100"
-                  placeholder="進捗率を入力 (0-100)"
-                  value={progress}
-                  onChange={(e) => setProgress(e.target.value)}
+                <textarea
+                  placeholder="コメントを入力してください..."
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                  rows={3}
                   style={{
                     width: '100%',
                     padding: '0.5rem',
@@ -209,22 +169,23 @@ function ReadingCard({ issue, onMarkAsRead, onMarkAsUnread, onDelete, onUpdatePr
                     backgroundColor: 'var(--background)',
                     color: 'var(--text-color)',
                     fontSize: '0.875rem',
-                    marginBottom: '0.5rem'
+                    marginBottom: '0.5rem',
+                    resize: 'vertical'
                   }}
                 />
                 <div style={{ display: 'flex', gap: '0.5rem' }}>
                   <button
                     className="reading-card-btn primary"
-                    onClick={handleUpdateProgress}
-                    disabled={isSubmitting}
+                    onClick={handleAddComment}
+                    disabled={!comment.trim() || isSubmitting}
                   >
-                    {isSubmitting ? '更新中...' : '更新する'}
+                    {isSubmitting ? '送信中...' : 'コメント追加'}
                   </button>
                   <button
                     className="reading-card-btn secondary"
                     onClick={() => {
-                      setShowProgressForm(false)
-                      setProgress(issue.progress?.toString() || '0')
+                      setShowCommentForm(false)
+                      setComment('')
                     }}
                     disabled={isSubmitting}
                   >
