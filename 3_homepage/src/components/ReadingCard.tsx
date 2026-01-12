@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import type { ReadingIssue, MarkAsReadInput, DeleteReadingIssueInput, AddCommentInput } from '../types/reading'
+import type { ReadingIssue, MarkAsReadInput, DeleteReadingIssueInput, AddCommentInput, UpdateCategoryInput, ReadingCategory } from '../types/reading'
+import { READING_CATEGORIES } from '../types/reading'
 import './ReadingCard.css'
 
 interface ReadingCardProps {
@@ -8,15 +9,19 @@ interface ReadingCardProps {
   onMarkAsUnread?: (issueNumber: number) => Promise<void>
   onDelete?: (input: DeleteReadingIssueInput) => Promise<void>
   onAddComment?: (input: AddCommentInput) => Promise<void>
+  onUpdateCategory?: (input: UpdateCategoryInput) => Promise<void>
 }
 
-function ReadingCard({ issue, onMarkAsRead, onMarkAsUnread, onDelete, onAddComment }: ReadingCardProps) {
+function ReadingCard({ issue, onMarkAsRead, onMarkAsUnread, onDelete, onAddComment, onUpdateCategory }: ReadingCardProps) {
   const [showImpressionForm, setShowImpressionForm] = useState(false)
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
   const [showCommentForm, setShowCommentForm] = useState(false)
+  const [showCategoryEdit, setShowCategoryEdit] = useState(false)
   const [impression, setImpression] = useState('')
   const [password, setPassword] = useState('')
   const [comment, setComment] = useState('')
+  const [selectedCategory, setSelectedCategory] = useState<ReadingCategory>(issue.category || 'その他')
+  const [categoryPassword, setCategoryPassword] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const handleMarkAsRead = async () => {
@@ -89,6 +94,27 @@ function ReadingCard({ issue, onMarkAsRead, onMarkAsUnread, onDelete, onAddComme
     }
   }
 
+  const handleUpdateCategory = async () => {
+    if (!onUpdateCategory || !categoryPassword.trim()) return
+
+    setIsSubmitting(true)
+    try {
+      await onUpdateCategory({
+        issueNumber: issue.number,
+        category: selectedCategory,
+        password: categoryPassword
+      })
+      setShowCategoryEdit(false)
+      setCategoryPassword('')
+      alert('カテゴリを更新しました！')
+    } catch (error) {
+      console.error('Failed to update category:', error)
+      alert('カテゴリの更新に失敗しました。パスワードを確認してください。')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('ja-JP', {
       year: 'numeric',
@@ -112,10 +138,87 @@ function ReadingCard({ issue, onMarkAsRead, onMarkAsUnread, onDelete, onAddComme
       <div className="reading-card-meta">
         <span>📅 {formatDate(issue.createdAt)}</span>
         <span>#{issue.number}</span>
+        {issue.category && onUpdateCategory && (
+          <span
+            className="reading-card-category editable"
+            onClick={() => setShowCategoryEdit(!showCategoryEdit)}
+            title="クリックしてカテゴリを変更"
+          >
+            {issue.category} ✏️
+          </span>
+        )}
+        {issue.category && !onUpdateCategory && (
+          <span className="reading-card-category">{issue.category}</span>
+        )}
         {issue.state === 'closed' && issue.closedAt && (
           <span>✅ {formatDate(issue.closedAt)}</span>
         )}
       </div>
+
+      {/* カテゴリ編集フォーム */}
+      {showCategoryEdit && onUpdateCategory && (
+        <div className="reading-card-category-edit">
+          <div style={{ marginBottom: '0.5rem' }}>
+            <label style={{ fontSize: '0.875rem', fontWeight: 600, marginBottom: '0.25rem', display: 'block' }}>
+              カテゴリを選択
+            </label>
+            <select
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value as ReadingCategory)}
+              style={{
+                width: '100%',
+                padding: '0.5rem',
+                borderRadius: '0.375rem',
+                border: '1px solid var(--border-color)',
+                backgroundColor: 'var(--background)',
+                color: 'var(--text-color)',
+                fontSize: '0.875rem'
+              }}
+            >
+              {READING_CATEGORIES.map((cat) => (
+                <option key={cat} value={cat}>{cat}</option>
+              ))}
+            </select>
+          </div>
+          <div style={{ marginBottom: '0.5rem' }}>
+            <input
+              type="password"
+              placeholder="管理者パスワードを入力"
+              value={categoryPassword}
+              onChange={(e) => setCategoryPassword(e.target.value)}
+              style={{
+                width: '100%',
+                padding: '0.5rem',
+                borderRadius: '0.375rem',
+                border: '1px solid var(--border-color)',
+                backgroundColor: 'var(--background)',
+                color: 'var(--text-color)',
+                fontSize: '0.875rem'
+              }}
+            />
+          </div>
+          <div style={{ display: 'flex', gap: '0.5rem' }}>
+            <button
+              className="reading-card-btn primary"
+              onClick={handleUpdateCategory}
+              disabled={!categoryPassword.trim() || isSubmitting}
+            >
+              {isSubmitting ? '更新中...' : '更新'}
+            </button>
+            <button
+              className="reading-card-btn secondary"
+              onClick={() => {
+                setShowCategoryEdit(false)
+                setCategoryPassword('')
+                setSelectedCategory(issue.category || 'その他')
+              }}
+              disabled={isSubmitting}
+            >
+              キャンセル
+            </button>
+          </div>
+        </div>
+      )}
 
       {issue.state === 'closed' && issue.impression && (
         <div className="reading-card-impression">

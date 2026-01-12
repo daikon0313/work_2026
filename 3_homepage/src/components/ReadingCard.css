@@ -63,6 +63,33 @@
   gap: 0.25rem;
 }
 
+.reading-card-category {
+  padding: 0.125rem 0.5rem;
+  background-color: var(--primary-color);
+  color: white;
+  border-radius: 0.75rem;
+  font-size: 0.625rem;
+  font-weight: 600;
+}
+
+.reading-card-category.editable {
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.reading-card-category.editable:hover {
+  background-color: var(--secondary-color);
+  transform: scale(1.05);
+}
+
+.reading-card-category-edit {
+  margin-top: 0.75rem;
+  padding: 1rem;
+  background-color: var(--background-alt);
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+}
+
 .reading-card-reason {
   margin-bottom: 1rem;
   padding: 0.75rem;

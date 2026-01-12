@@ -129,6 +129,28 @@ function ReadingStats({ issues }: ReadingStatsProps) {
         </div>
       </div>
 
+      {/* カテゴリ別統計 */}
+      {stats.categoryDistribution && stats.categoryDistribution.length > 0 && (
+        <div className="stats-section">
+          <h2>📊 カテゴリ別統計</h2>
+          <div className="category-stats-grid">
+            {stats.categoryDistribution.map(({ category, count, percentage }) => (
+              <div key={category} className="category-stat-item">
+                <div className="category-stat-label">{category}</div>
+                <div className="category-stat-value">{count}記事</div>
+                <div className="category-stat-bar">
+                  <div
+                    className="category-stat-fill"
+                    style={{ width: `${percentage}%` }}
+                  />
+                </div>
+                <div className="category-stat-percentage">{percentage}%</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* 月別追加数 */}
       {hasMonthlyData && (
         <div className="stats-section">

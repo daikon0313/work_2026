@@ -1,5 +1,6 @@
 import { GITHUB_CONFIG, getGitHubToken } from '../config/github'
-import type { ReadingIssue, CreateReadingIssueInput, MarkAsReadInput, DeleteReadingIssueInput, AddCommentInput } from '../types/reading'
+import type { ReadingIssue, CreateReadingIssueInput, MarkAsReadInput, DeleteReadingIssueInput, AddCommentInput, UpdateCategoryInput, ReadingCategory } from '../types/reading'
+import { detectCategory } from './categoryMatcher'
 
 const API_BASE = 'https://api.github.com'
 
@@ -14,22 +15,27 @@ function getHeaders(): HeadersInit {
 }
 
 // Issueボディのパース
-function parseIssueBody(body: string | null): { url: string } {
+function parseIssueBody(body: string | null): { url: string; category?: ReadingCategory } {
   if (!body) return { url: '' }
 
   const urlMatch = body.match(/URL:\s*(.+)/)
+  const categoryMatch = body.match(/Category:\s*(.+)/)
 
   return {
     url: urlMatch ? urlMatch[1].trim() : '',
+    category: categoryMatch ? (categoryMatch[1].trim() as ReadingCategory) : undefined,
   }
 }
 
 // GitHub Issueを読書リストアイテムに変換
 function transformIssueToReadingItem(issue: any): ReadingIssue {
-  const { url } = parseIssueBody(issue.body)
+  const { url, category: savedCategory } = parseIssueBody(issue.body)
 
   // タイトルから「[読みたい記事] 」プレフィックスを除去
   const title = issue.title.replace(/^\[読みたい記事\]\s*/, '')
+
+  // 保存されたカテゴリがあればそれを使用、なければタイトルから自動判定
+  const category = savedCategory || detectCategory(title)
 
   return {
     number: issue.number,
@@ -39,6 +45,7 @@ function transformIssueToReadingItem(issue: any): ReadingIssue {
     state: issue.state,
     createdAt: issue.created_at,
     closedAt: issue.closed_at,
+    category,
   }
 }
 
@@ -243,6 +250,49 @@ export async function addCommentToIssue(input: AddCommentInput): Promise<void> {
     }
   } catch (error) {
     console.error('Failed to add comment:', error)
+    throw error
+  }
+}
+
+// カテゴリを更新
+export async function updateIssueCategory(input: UpdateCategoryInput): Promise<void> {
+  const token = getGitHubToken()
+  if (!token) {
+    throw new Error('GitHub token is required to update category')
+  }
+
+  try {
+    // まず現在のIssueを取得
+    const issueUrl = `${API_BASE}/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/issues/${input.issueNumber}`
+
+    const getResponse = await fetch(issueUrl, {
+      headers: getHeaders(),
+    })
+
+    if (!getResponse.ok) {
+      throw new Error(`Failed to fetch issue: ${getResponse.statusText}`)
+    }
+
+    const issue = await getResponse.json()
+    const { url } = parseIssueBody(issue.body)
+
+    // 新しいボディを作成（URLとカテゴリ）
+    const newBody = `URL: ${url}\nCategory: ${input.category}`
+
+    // Issueボディを更新
+    const updateResponse = await fetch(issueUrl, {
+      method: 'PATCH',
+      headers: getHeaders(),
+      body: JSON.stringify({
+        body: newBody,
+      }),
+    })
+
+    if (!updateResponse.ok) {
+      throw new Error(`Failed to update category: ${updateResponse.statusText}`)
+    }
+  } catch (error) {
+    console.error('Failed to update category:', error)
     throw error
   }
 }

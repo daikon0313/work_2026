@@ -1,7 +1,9 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { useReadingIssues } from '../hooks/useReadingIssues'
 import AddReadingForm from '../components/AddReadingForm'
 import ReadingCard from '../components/ReadingCard'
+import ReadingCategoryFilter from '../components/ReadingCategoryFilter'
+import type { ReadingCategory } from '../types/reading'
 import './ReadingListPage.css'
 
 type Tab = 'to-read' | 'read'
@@ -17,12 +19,23 @@ function ReadingListPage() {
     markAsUnread,
     deleteIssue,
     addComment,
+    updateCategory,
     reload
   } = useReadingIssues()
 
   const [activeTab, setActiveTab] = useState<Tab>('to-read')
+  const [selectedCategory, setSelectedCategory] = useState<ReadingCategory | null>(null)
 
-  const currentIssues = activeTab === 'to-read' ? toReadIssues : readIssues
+  // タブとカテゴリの両方でフィルタリング
+  const currentIssues = useMemo(() => {
+    const tabFiltered = activeTab === 'to-read' ? toReadIssues : readIssues
+
+    if (selectedCategory === null) {
+      return tabFiltered
+    }
+
+    return tabFiltered.filter(issue => issue.category === selectedCategory)
+  }, [activeTab, selectedCategory, toReadIssues, readIssues])
 
   if (loading) {
     return (
@@ -67,13 +80,23 @@ function ReadingListPage() {
         </button>
       </div>
 
+      {/* カテゴリフィルター */}
+      <ReadingCategoryFilter
+        selectedCategory={selectedCategory}
+        onSelectCategory={setSelectedCategory}
+        issues={activeTab === 'to-read' ? toReadIssues : readIssues}
+      />
+
       <div className="reading-list-content">
         {currentIssues.length === 0 ? (
           <div className="reading-list-empty">
             <p>
-              {activeTab === 'to-read'
-                ? '📖 まだ読みたい記事がありません'
-                : '✅ まだ読了した記事がありません'}
+              {selectedCategory
+                ? `📖 「${selectedCategory}」カテゴリの記事がありません`
+                : (activeTab === 'to-read'
+                  ? '📖 まだ読みたい記事がありません'
+                  : '✅ まだ読了した記事がありません')
+              }
             </p>
             <p>
               {activeTab === 'to-read'
@@ -90,6 +113,7 @@ function ReadingListPage() {
               onMarkAsUnread={activeTab === 'read' ? markAsUnread : undefined}
               onDelete={activeTab === 'to-read' ? deleteIssue : undefined}
               onAddComment={activeTab === 'to-read' ? addComment : undefined}
+              onUpdateCategory={updateCategory}
             />
           ))
         )}

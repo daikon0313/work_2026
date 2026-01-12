@@ -6,6 +6,7 @@ import type {
   ReadingStatistics,
   LabelDistribution,
   MonthlyData,
+  CategoryDistribution,
 } from '../types/statistics'
 
 // 過去12ヶ月の月リストを生成
@@ -73,6 +74,21 @@ export function useReadingStatistics(issues: ReadingIssue[]): ReadingStatistics 
     const unreadCount = issues.filter((i) => i.state === 'open').length
     const readingRate = totalCount > 0 ? (readCount / totalCount) * 100 : 0
 
+    // カテゴリ別分布を計算
+    const categoryCount = new Map<string, number>()
+    issues.forEach(issue => {
+      const category = issue.category || 'その他'
+      categoryCount.set(category, (categoryCount.get(category) || 0) + 1)
+    })
+
+    const categoryDistribution: CategoryDistribution[] = Array.from(categoryCount.entries())
+      .map(([category, count]) => ({
+        category,
+        count,
+        percentage: totalCount > 0 ? Math.round((count / totalCount) * 100) : 0,
+      }))
+      .sort((a, b) => b.count - a.count)
+
     // 月別追加数を計算（最近12ヶ月）
     const last12Months = getLast12Months()
     const monthlyCount = new Map<string, number>()
@@ -94,6 +110,7 @@ export function useReadingStatistics(issues: ReadingIssue[]): ReadingStatistics 
       unreadCount,
       readingRate,
       monthlyAdded,
+      categoryDistribution,
     }
   }, [issues])
 }

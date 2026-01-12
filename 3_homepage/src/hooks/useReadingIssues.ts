@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import type { ReadingIssue, CreateReadingIssueInput, MarkAsReadInput, DeleteReadingIssueInput, AddCommentInput } from '../types/reading'
+import type { ReadingIssue, CreateReadingIssueInput, MarkAsReadInput, DeleteReadingIssueInput, AddCommentInput, UpdateCategoryInput } from '../types/reading'
 import {
   fetchReadingIssues,
   createReadingIssue,
@@ -7,7 +7,8 @@ import {
   reopenIssue,
   fetchIssueComments,
   deleteReadingIssue,
-  addCommentToIssue
+  addCommentToIssue,
+  updateIssueCategory
 } from '../utils/githubApi'
 
 export function useReadingIssues() {
@@ -109,6 +110,19 @@ export function useReadingIssues() {
     }
   }
 
+  // カテゴリを更新
+  const updateCategory = async (input: UpdateCategoryInput) => {
+    try {
+      setError(null)
+      await updateIssueCategory(input)
+      // Issueを再取得して状態を更新
+      await loadIssues()
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to update category')
+      throw err
+    }
+  }
+
   // 未読と既読に分類
   const toReadIssues = issues.filter((issue) => issue.state === 'open')
   const readIssues = issues.filter((issue) => issue.state === 'closed')
@@ -124,6 +138,7 @@ export function useReadingIssues() {
     markAsUnread,
     deleteIssue,
     addComment,
+    updateCategory,
     reload: loadIssues,
   }
 }
