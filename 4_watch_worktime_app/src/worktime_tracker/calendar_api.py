@@ -10,8 +10,11 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
-# OAuth 2.0 scopes for Google Calendar
-SCOPES = ["https://www.googleapis.com/auth/calendar.events"]
+# OAuth 2.0 scopes for Google Calendar and Gmail
+SCOPES = [
+    "https://www.googleapis.com/auth/calendar.events",
+    "https://www.googleapis.com/auth/gmail.send",
+]
 
 # Paths for credentials
 APP_DIR = Path.home() / ".worktime_tracker"

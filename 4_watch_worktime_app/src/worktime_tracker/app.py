@@ -7,6 +7,7 @@ from tkinter import messagebox
 
 from worktime_tracker.calendar_api import GoogleCalendarAPI
 from worktime_tracker.dialog import show_work_input_dialog
+from worktime_tracker.scheduler import DailySummaryScheduler
 
 
 def show_notification(title: str, subtitle: str, message: str):
@@ -41,6 +42,9 @@ class WorktimeTrackerApp:
 
         # Google Calendar API
         self.calendar_api = GoogleCalendarAPI()
+
+        # Daily summary scheduler
+        self.scheduler = DailySummaryScheduler()
 
         # Create UI elements
         self.create_widgets()
@@ -243,11 +247,17 @@ class WorktimeTrackerApp:
 
     def on_quit(self):
         """Quit the application."""
+        # Stop scheduler
+        self.scheduler.stop()
+
         self.root.quit()
         self.root.destroy()
 
     def run(self):
         """Start the application."""
+        # Start daily summary scheduler
+        self.scheduler.start()
+
         self.root.mainloop()
 
 
