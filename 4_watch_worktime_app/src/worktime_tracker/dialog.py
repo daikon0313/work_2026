@@ -1,6 +1,7 @@
 """Input dialog module for work details."""
 
-import rumps
+import tkinter as tk
+from tkinter import messagebox, simpledialog
 
 
 def show_work_input_dialog() -> tuple[str, str] | None:
@@ -9,42 +10,37 @@ def show_work_input_dialog() -> tuple[str, str] | None:
     Returns:
         Tuple of (title, description) if user confirms, None if cancelled.
     """
+    # Create a temporary root window for dialogs
+    root = tk.Tk()
+    root.withdraw()  # Hide the main window
+
     # Get work title (required)
-    title_window = rumps.Window(
-        message="Enter work title:",
-        title="Work Title",
-        default_text="",
-        ok="Next",
-        cancel="Cancel",
-        dimensions=(320, 24),
+    title = simpledialog.askstring(
+        "Work Title",
+        "Enter work title:",
+        parent=root
     )
-    title_response = title_window.run()
 
-    if not title_response.clicked:
-        return None
-
-    title = title_response.text.strip()
-    if not title:
-        rumps.alert(
-            title="Error",
-            message="Work title is required.",
-        )
+    if not title or not title.strip():
+        if title is not None:  # User clicked OK with empty text
+            messagebox.showerror(
+                "Error",
+                "Work title is required.",
+                parent=root
+            )
+        root.destroy()
         return None
 
     # Get work description (optional)
-    description_window = rumps.Window(
-        message="Enter work description (optional):",
-        title="Work Description",
-        default_text="",
-        ok="Register",
-        cancel="Cancel",
-        dimensions=(320, 100),
+    description = simpledialog.askstring(
+        "Work Description",
+        "Enter work description (optional):",
+        parent=root
     )
-    description_response = description_window.run()
 
-    if not description_response.clicked:
+    if description is None:  # User clicked Cancel
+        root.destroy()
         return None
 
-    description = description_response.text.strip()
-
-    return (title, description)
+    root.destroy()
+    return (title.strip(), description.strip())
