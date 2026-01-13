@@ -91,12 +91,13 @@ class DailySummaryEmailer:
                 continue
 
         # Build email body
+        work_summary = "\n".join(work_lines)
         body = f"""こんにちは、
 
 {date.strftime("%Y年%m月%d日")}の作業サマリーをお送りします。
 
 【作業一覧】
-{"".join([line + "\\n" for line in work_lines])}
+{work_summary}
 
 【合計作業時間】
 {self.format_duration(total_duration)}
