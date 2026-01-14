@@ -247,7 +247,7 @@ class GoogleCalendarAPI:
             minutes = (total_seconds % 3600) // 60
 
             # Summary title with identifier
-            summary_prefix = "📊 本日の作業時間: "
+            summary_prefix = "📊 作業時間: "
             summary_title = f"{summary_prefix}{hours}時間{minutes:02d}分"
             print(f"[DEBUG] Summary title: {summary_title}")
 
