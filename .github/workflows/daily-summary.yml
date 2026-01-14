@@ -2,9 +2,9 @@ name: Daily Work Summary Email
 
 on:
   schedule:
-    # Run at 06:00 JST (21:00 UTC previous day) every day
+    # 毎日 日本時間 06:00 に実行 (UTC 21:00)
     - cron: '0 21 * * *'
-  workflow_dispatch: # Allow manual trigger for testing
+  workflow_dispatch: # 手動実行も可能
 
 jobs:
   send-email:
