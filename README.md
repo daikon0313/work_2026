@@ -41,7 +41,7 @@
 - [💼 キャリア] **[Practice Tests with Detailed Explanations for Databricks Certified Data Engineer Professional exam 2](https://github.com/daikon0313/work_2026/issues/12)**
 - [💼 キャリア] **[Practice Tests with Detailed Explanations for Databricks Certified Data Engineer Professional exam 1](https://github.com/daikon0313/work_2026/issues/11)**
 - [💼 キャリア] **[Databricks 認定データ エンジニア プロフェッショナル 受かる](https://github.com/daikon0313/work_2026/issues/9)**
-- [📚 学習] **[本を年間50冊読む](https://github.com/daikon0313/work_2026/issues/8)**
+- [📚 学習] **[本を年間50���読む](https://github.com/daikon0313/work_2026/issues/8)**
 <!-- CURRENT_FOCUS_END -->
 
 ---
