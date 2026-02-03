@@ -5,12 +5,12 @@
 <!-- TIME_PROGRESS_START -->
 ### 📅 2026年の進捗
 ```
-年間進捗: ██░░░░░░░░░░░░░░░░░░ 9% (33/365日)
+年間進捗: ██░░░░░░░░░░░░░░░░░░ 9% (34/365日)
 ```
 
 ### 📆 今月の進捗（2月）
 ```
-月間進捗: █░░░░░░░░░░░░░░░░░░░ 7% (2/28日)
+月間進捗: ██░░░░░░░░░░░░░░░░░░ 11% (3/28日)
 ```
 <!-- TIME_PROGRESS_END -->
 
@@ -40,7 +40,7 @@
 - [📚 学習] **[SPCS appとポスグレの記事を書く](https://github.com/daikon0313/work_2026/issues/13)**
 - [💼 キャリア] **[Practice Tests with Detailed Explanations for Databricks Certified Data Engineer Professional exam 2](https://github.com/daikon0313/work_2026/issues/12)**
 - [💼 キャリア] **[Practice Tests with Detailed Explanations for Databricks Certified Data Engineer Professional exam 1](https://github.com/daikon0313/work_2026/issues/11)**
-- [💼 キャリア] **[Databricks 認定データ エンジ��ア プロフェッショナル 受かる](https://github.com/daikon0313/work_2026/issues/9)**
+- [💼 キャリア] **[Databricks 認定データ エンジニア プロフェッショナル 受かる](https://github.com/daikon0313/work_2026/issues/9)**
 - [📚 学習] **[本を年間50冊読む](https://github.com/daikon0313/work_2026/issues/8)**
 <!-- CURRENT_FOCUS_END -->
 
