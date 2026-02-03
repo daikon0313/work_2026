@@ -1,0 +1,26 @@
+in:
+  type: file
+  path_prefix: ./data/sample.csv
+  parser:
+    type: csv
+    charset: UTF-8
+    delimiter: ","
+    quote: '"'
+    skip_header_lines: 1
+    columns:
+      - { name: id,         type: long }
+      - { name: name,       type: string }
+      - { name: email,      type: string }
+      - { name: department, type: string }
+      - { name: created_at, type: timestamp, format: "%Y-%m-%d %H:%M:%S" }
+
+out:
+  type: snowflake
+  host: <your-account>.snowflakecomputing.com
+  user: <your-user>
+  password: <your-password>
+  warehouse: <your-warehouse>
+  database: embulk_tutorial
+  schema: public
+  table: users
+  mode: insert

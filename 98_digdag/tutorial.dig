@@ -1,0 +1,21 @@
+timezone: Asia/Tokyo
+
+_export:
+  pg:
+    host: localhost
+    port: 5432
+    database: digdag_tutorial
+    user: postgres
+    password: postgres
+
++step1_create_table:
+  pg>: queries/01_create_table.sql
+
++step2_insert_data:
+  pg>: queries/02_insert_data.sql
+
++step3_transform:
+  pg>: queries/03_transform.sql
+
++step4_aggregate:
+  pg>: queries/04_aggregate.sql

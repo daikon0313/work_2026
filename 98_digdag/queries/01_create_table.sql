@@ -1,0 +1,20 @@
+-- ユーザーテーブル
+DROP TABLE IF EXISTS orders;
+DROP TABLE IF EXISTS users;
+
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    age INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 注文テーブル
+CREATE TABLE orders (
+    id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL REFERENCES users(id),
+    product VARCHAR(200) NOT NULL,
+    amount NUMERIC(10, 2) NOT NULL,
+    ordered_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

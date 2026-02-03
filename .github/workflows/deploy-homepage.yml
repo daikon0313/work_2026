@@ -2,8 +2,6 @@ name: Deploy Homepage to GitHub Pages
 
 on:
   push:
-    branches:
-      - main
     paths:
       - '3_homepage/**'
   workflow_dispatch:

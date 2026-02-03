@@ -1,0 +1,6 @@
+id,name,email,department,created_at
+1,田中太郎,tanaka@example.com,engineering,2025-01-15 10:30:00
+2,佐藤花子,sato@example.com,marketing,2025-02-20 14:00:00
+3,鈴木一郎,suzuki@example.com,sales,2025-03-10 09:15:00
+4,山田美咲,yamada@example.com,engineering,2025-04-05 16:45:00
+5,高橋健一,takahashi@example.com,marketing,2025-05-01 11:00:00
