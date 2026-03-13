@@ -5,8 +5,17 @@ import tkinter as tk
 from datetime import datetime, timedelta
 from tkinter import messagebox
 
+import AppKit
+
 from worktime_tracker.calendar_api import GoogleCalendarAPI
 from worktime_tracker.scheduler import DailySummaryScheduler
+
+
+def _hide_dock_icon():
+    """Hide the Python Dock icon, keeping only the tkinter window."""
+    app = AppKit.NSApplication.sharedApplication()
+    # NSApplicationActivationPolicyAccessory = 1 (no Dock icon, no menu bar)
+    app.setActivationPolicy_(1)
 
 
 def show_notification(title: str, subtitle: str, message: str):
@@ -296,6 +305,7 @@ class WorktimeTrackerApp:
 def main():
     """Entry point for the application."""
     app = WorktimeTrackerApp()
+    _hide_dock_icon()
     app.run()
 
 
