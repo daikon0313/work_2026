@@ -62,7 +62,7 @@ OPTIONS = {
         'CFBundleIdentifier': 'com.yourname.worktime-tracker',
         'CFBundleVersion': '1.0.0',
         'CFBundleShortVersionString': '1.0.0',
-        'LSUIElement': False,  # Show in Dock
+        'LSUIElement': True,  # Hide from Dock (accessory app)
         'NSHighResolutionCapable': True,
     }
 }
