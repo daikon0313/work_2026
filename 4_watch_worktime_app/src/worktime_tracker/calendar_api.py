@@ -112,6 +112,13 @@ class GoogleCalendarAPI:
                     "timeZone": str(local_tz),
                 },
                 "colorId": "10",  # Green color for worktime tracker events
+                "attendees": [
+                    {
+                        "email": "worktime-tracker@noreply.local",
+                        "displayName": "Worktime Tracker",
+                        "responseStatus": "accepted",
+                    }
+                ],
             }
 
             result = service.events().insert(calendarId=calendar_id, body=event).execute()
