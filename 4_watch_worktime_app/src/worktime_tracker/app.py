@@ -32,12 +32,13 @@ def show_notification(title: str, subtitle: str, message: str):
 class WorkInputDialog:
     """Dialog for inputting work title and description."""
 
-    def __init__(self, parent, elapsed_str: str):
+    def __init__(self, parent, elapsed_str: str, prefill_title: str = "",
+                 prefill_done: str = "", prefill_next: str = ""):
         self.result = None
 
         self.dialog = tk.Toplevel(parent)
         self.dialog.title("作業内容の入力")
-        self.dialog.geometry("420x300")
+        self.dialog.geometry("420x400")
         self.dialog.resizable(False, False)
         self.dialog.transient(parent)
         self.dialog.grab_set()
@@ -45,7 +46,7 @@ class WorkInputDialog:
         # Center the dialog
         self.dialog.update_idletasks()
         x = parent.winfo_x() + (parent.winfo_width() - 420) // 2
-        y = parent.winfo_y() + (parent.winfo_height() - 300) // 2
+        y = parent.winfo_y() + (parent.winfo_height() - 400) // 2
         self.dialog.geometry(f"+{x}+{y}")
 
         # Elapsed time display
@@ -61,14 +62,27 @@ class WorkInputDialog:
         )
         self.title_entry = tk.Entry(self.dialog, font=("Helvetica", 13))
         self.title_entry.pack(fill="x", padx=20, pady=(2, 10))
+        if prefill_title:
+            self.title_entry.insert(0, prefill_title)
         self.title_entry.focus_set()
 
-        # Description input
-        tk.Label(self.dialog, text="作業内容（任意）", anchor="w").pack(
+        # Done input
+        tk.Label(self.dialog, text="▫️ やったこと（任意）", anchor="w").pack(
             fill="x", padx=20
         )
-        self.desc_text = tk.Text(self.dialog, font=("Helvetica", 12), height=4)
-        self.desc_text.pack(fill="x", padx=20, pady=(2, 10))
+        self.done_text = tk.Text(self.dialog, font=("Helvetica", 12), height=3)
+        self.done_text.pack(fill="x", padx=20, pady=(2, 5))
+        if prefill_done:
+            self.done_text.insert("1.0", prefill_done)
+
+        # Next input
+        tk.Label(self.dialog, text="▫️ 次回やること（任意）", anchor="w").pack(
+            fill="x", padx=20
+        )
+        self.next_text = tk.Text(self.dialog, font=("Helvetica", 12), height=3)
+        self.next_text.pack(fill="x", padx=20, pady=(2, 10))
+        if prefill_next:
+            self.next_text.insert("1.0", prefill_next)
 
         # Buttons
         btn_frame = tk.Frame(self.dialog)
@@ -96,7 +110,17 @@ class WorkInputDialog:
         if not title:
             messagebox.showerror("エラー", "作業タイトルは必須です", parent=self.dialog)
             return
-        description = self.desc_text.get("1.0", "end").strip()
+        done = self.done_text.get("1.0", "end").strip()
+        next_task = self.next_text.get("1.0", "end").strip()
+
+        # Build description for Google Calendar
+        parts = []
+        if done:
+            parts.append(f"▫️ やったこと\n{done}")
+        if next_task:
+            parts.append(f"▫️ 次回やること\n{next_task}")
+        description = "\n\n".join(parts)
+
         self.result = (title, description)
         self.dialog.destroy()
 
@@ -111,8 +135,9 @@ class WorktimeTrackerApp:
     def __init__(self):
         self.root = tk.Tk()
         self.root.title("Worktime Tracker")
-        self.root.geometry("320x200")
-        self.root.resizable(False, False)
+        self.root.geometry("420x480")
+        self.root.resizable(True, True)
+        self.root.minsize(320, 400)
 
         # Transparency (0.0=fully transparent, 1.0=opaque)
         self.root.attributes("-alpha", 0.85)
@@ -171,6 +196,28 @@ class WorktimeTrackerApp:
         )
         self.stop_button.grid(row=0, column=2, padx=5)
 
+        # Memo section (title + done/next during tracking)
+        memo_frame = tk.Frame(self.root)
+        memo_frame.pack(fill="both", expand=True, padx=15, pady=(5, 0))
+
+        tk.Label(memo_frame, text="タイトル", anchor="w", font=("Helvetica", 10)).pack(
+            fill="x"
+        )
+        self.memo_title_entry = tk.Entry(memo_frame, font=("Helvetica", 11))
+        self.memo_title_entry.pack(fill="x", pady=(1, 5))
+
+        tk.Label(memo_frame, text="▫️ やったこと", anchor="w", font=("Helvetica", 10)).pack(
+            fill="x"
+        )
+        self.memo_done_text = tk.Text(memo_frame, font=("Helvetica", 10), height=3)
+        self.memo_done_text.pack(fill="both", expand=True, pady=(1, 5))
+
+        tk.Label(memo_frame, text="▫️ 次回やること", anchor="w", font=("Helvetica", 10)).pack(
+            fill="x"
+        )
+        self.memo_next_text = tk.Text(memo_frame, font=("Helvetica", 10), height=3)
+        self.memo_next_text.pack(fill="both", expand=True, pady=(1, 5))
+
         quit_button = tk.Button(
             self.root,
             text="Quit",
@@ -178,7 +225,7 @@ class WorktimeTrackerApp:
             width=8,
             font=("Helvetica", 10),
         )
-        quit_button.pack(pady=8, anchor="center")
+        quit_button.pack(pady=5, anchor="center")
 
     def get_elapsed_str(self) -> str:
         """Get formatted elapsed time string."""
@@ -233,8 +280,13 @@ class WorktimeTrackerApp:
 
         elapsed_str = self.get_elapsed_str()
 
-        # Show input dialog
-        dialog = WorkInputDialog(self.root, elapsed_str)
+        # Get memo values from main window
+        prefill_title = self.memo_title_entry.get().strip()
+        prefill_done = self.memo_done_text.get("1.0", "end").strip()
+        prefill_next = self.memo_next_text.get("1.0", "end").strip()
+
+        # Show input dialog with prefilled values
+        dialog = WorkInputDialog(self.root, elapsed_str, prefill_title, prefill_done, prefill_next)
 
         if dialog.result:
             title, description = dialog.result
@@ -285,6 +337,10 @@ class WorktimeTrackerApp:
         self.last_resume_dt = None
         self.elapsed = timedelta()
         self.running = False
+
+        self.memo_title_entry.delete(0, tk.END)
+        self.memo_done_text.delete("1.0", tk.END)
+        self.memo_next_text.delete("1.0", tk.END)
 
         self.start_button.config(state=tk.NORMAL)
         self.pause_button.config(state=tk.DISABLED)

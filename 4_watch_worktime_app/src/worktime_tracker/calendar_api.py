@@ -121,7 +121,7 @@ class GoogleCalendarAPI:
                 ],
             }
 
-            result = service.events().insert(calendarId=calendar_id, body=event).execute()
+            result = service.events().insert(calendarId=calendar_id, body=event, sendUpdates="none").execute()
             return True, f"Event created: {result.get('htmlLink', '')}"
         except HttpError as error:
             error_msg = f"HTTP Error: {error.status_code} - {error.reason}"
@@ -285,6 +285,7 @@ class GoogleCalendarAPI:
                         calendarId=calendar_id,
                         eventId=existing_summary["id"],
                         body=summary_event,
+                        sendUpdates="none",
                     )
                     .execute()
                 )
@@ -293,7 +294,7 @@ class GoogleCalendarAPI:
                 # Create new summary
                 result = (
                     service.events()
-                    .insert(calendarId=calendar_id, body=summary_event)
+                    .insert(calendarId=calendar_id, body=summary_event, sendUpdates="none")
                     .execute()
                 )
                 return True, f"Daily summary created: {summary_title}"
